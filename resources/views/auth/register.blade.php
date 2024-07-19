@@ -38,7 +38,7 @@
                         <!-- Brand logo-->
                         <a class="brand-logo" href="index.html">
                             <img width="60" src="{{ asset('content/uploads/logo.png') }}">&nbsp;&nbsp;
-                            <h2 class="brand-text text-primary ms-1">YoResellAdmin</h2>
+                            <h2 class="brand-text text-primary ms-1 mt-1">YoResellAdmin</h2>
                         </a>
                         <!-- /Brand logo-->
 
@@ -59,7 +59,8 @@
                                             <div class="content-header mb-2">
                                                 <h2 class="fw-bolder mb-75">Register Akun</h2>
                                             </div>
-                                            <form method="post" action="register.php" class="auth-register-form mt-2">
+                                            <form method="post" action="{{ route('regpros') }}" class="auth-register-form mt-2">
+                                            @csrf
                                                 <div class="alert alert-danger d-none" id="error-list">
                                                     <ul></ul>
                                                 </div>
@@ -92,18 +93,18 @@
                                                 <div class="row">
                                                     <div class="col-md-4 mb-1">
                                                         <label class="form-label" for="phone">No Handphone</label>
-                                                        <input type="text" class="form-control numeric" name="telp" required autocomplete="telp" placeholder="Nomor HP">
+                                                        <input type="text" class="form-control numeric" name="phone" id="phone" required autocomplete="telp" placeholder="Nomor HP">
                                                         <span class="invalid-feedback d-none" role="alert">
                                                             <strong></strong>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-8 mb-1">
-                                                        <label class="form-label" for="roles">Roles</label>
-                                                        <select class="form-control" name="roles" required>
+                                                        <label class="form-label" for="role">Role</label>
+                                                        <select class="form-control" name="role" required>
                                                             <option hidden>Select role</option>
-                                                            <option value="administrator">Administrator</option>
-                                                            <option value="cso">CSO</option>
-                                                            <option value="user">User</option>
+                                                            <option value="Administrator">Administrator</option>
+                                                            <option value="CSO">CSO</option>
+                                                            <option value="User">User</option>
                                                         </select>
                                                         <span class="invalid-feedback d-none" role="alert">
                                                             <strong></strong>

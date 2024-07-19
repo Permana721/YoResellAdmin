@@ -13,6 +13,10 @@ use App\Http\Controllers\MemberController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [MemberController::class, 'index']);
 
 Route::get('/login', [MemberController::class, 'login']);
 Route::get('/register', [MemberController::class, 'register']);
+
+Route::post('/regpros', [MemberController::class, 'regpros'])->name('regpros');
+Route::post('/logpros', [MemberController::class, 'logpros'])->name('logpros');

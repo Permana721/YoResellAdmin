@@ -46,7 +46,8 @@
                                 <center><img width="170" src="/content/uploads/logo.png"></center>
                                 <center><h2 class="card-title font-weight-bold mb-1">YoResellAdmin</h2></center>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
-                                <form class="auth-login-form mt-2" action="/login" method="POST">
+                                <form class="auth-login-form mt-2" action="{{ route('logpros') }}" method="POST">
+                                @csrf
                                     <div class="form-group">
                                         <label class="form-label" for="username">User Name</label>
                                         <input required class="form-control" id="username" type="text" name="username" placeholder="username" aria-describedby="username" autofocus="" tabindex="1" />
