@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Requests\MemberRequest;
@@ -13,7 +14,7 @@ class MemberController extends Controller
 
     public function index()
     {
-        return view("INI HALAMAN UTAMA");
+        return view('home');
     }
 
     public function login()
@@ -37,7 +38,7 @@ class MemberController extends Controller
             'phone' => 'required',
         ]);
 
-        $data = new Member;
+        $data = new User;
         $data->full_name = $request->full_name;
         $data->username = $request->username;
         $data->email = $request->email;
@@ -56,9 +57,9 @@ class MemberController extends Controller
             'password' => 'required|string',
         ]);
 
-        $member = Member::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->first();
 
-        if ($member && Hash::check($request->password, $member->password)) {
+        if ($user && Hash::check($request->password, $user->password)) {
             return redirect('/');
             return response()->json(['message' => 'Login successful']);
         } else {
