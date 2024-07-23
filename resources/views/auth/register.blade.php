@@ -100,7 +100,7 @@
                                                     </div>
                                                     <div class="col-md-8 mb-1">
                                                         <label class="form-label" for="role">Role</label>
-                                                        <select class="form-control" name="role" required>
+                                                        <select class="form-control" id="role" name="role" required>
                                                             <option hidden>Select role</option>
                                                             <option value="Administrator">Administrator</option>
                                                             <option value="CSO">CSO</option>
@@ -110,14 +110,6 @@
                                                             <strong></strong>
                                                         </span>
                                                     </div>                                                    
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4 mb-1">
-                                                        <div id="captcha"></div>
-                                                        <span class="invalid-feedback d-none" role="alert">
-                                                            <strong></strong>
-                                                        </span>
-                                                    </div>
                                                 </div>
                                                 <div class="d-flex justify-content-between mt-2">
                                                     <button type="submit" class="btn btn-success btn-submit">

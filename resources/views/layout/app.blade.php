@@ -9,7 +9,7 @@
     <meta name="application-name" content="YoResellAdmin">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="YoResellAdmin">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicon/apple-icon-114x114.png') }}">
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicon/apple-icon-120x120.png') }}">
     <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicon/apple-icon-144x144.png') }}">
@@ -17,8 +17,8 @@
     <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicon/android-icon-192x192.png') }}">
     <link rel="manifest" href="{{ url('manifest.json') }}">
     <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
-    <title>@yield('title') - {{ getSetting('web_name') }}</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('content/uploads/'.getSetting('favicon')) }}">
+    <title>YoResell - Admin</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('content/uploads/favicon.png') }}">
     <link href="{{ asset('app-assets/css/google-font/google-fonts.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/sweetalert2.min.css')}}">
@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/themes/bordered-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link href="{{ asset('app-assets/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>.brand-text-head {font-size: 1em;color: #7367F0;white-space: normal;margin-left: 1.7mm}.home-font{font-size:5em}.home-title{ color: #636363; }.text-align-right{text-align: right;}.fontme{font-size:1.3em}.text-align-center{text-align: center}.uppercased {text-transform: uppercase; }</style>
     @yield('styles')
 </head>
@@ -46,25 +47,25 @@
                     <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    @include('layouts.breadcrumb')
+                    @include('layout.breadcrumb')
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ml-auto">
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
-                            <span class="user-name font-weight-bolder">{{Auth::user()->name}}</span>
-                            <span class="user-status">{{ getStore(Auth::user()->initial_store) }}</span>
+                            <span class="user-name font-weight-bolder">Nama</span>
+                            <span class="user-status">Kepatihan</span>
                         </div>
                         <span class="avatar">
-                            <img class="round" id="avatar_picture" src="{{ asset('pictures/users/'.Auth::user()->file_name) }}" onerror="this.src='{{ asset('app-assets/images/avatars/default.png')}}';" alt="avatar" height="40" width="40">
+                            <img class="round" id="avatar_picture" src="{{ asset('pictures/users/default.png') }}" onerror="this.src='{{ asset('app-assets/images/avatars/default.png')}}';" alt="avatar" height="40" width="40">
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                        @if(Auth::user()->can('stores-change'))
+                        {{-- @if(Auth::user()->can('stores-change'))
                         <a class="dropdown-item" href="javascript:void();" data-toggle="modal" data-target="#modalChangeStore"><i class="fas fa-store mr-50"></i> Change Store</a>
                         <div class="dropdown-divider"></div>
-                        @endcan
+                        @endcan --}}
                         <a class="dropdown-item" href="{{ url('/users/edit/profile') }}"><i class="mr-50" data-feather="user"></i> Profile</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="mr-50" data-feather="power"></i> Logout</a>
@@ -74,7 +75,7 @@
         </div>
     </nav>
     <!-- BEGIN: Main Menu-->
-    @include('layouts.sidemenu')
+    @include('layout.sidemenu')
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -83,21 +84,7 @@
             <div class="content-body">
                 <div class="row">
                     <div class="col-12">
-                        @if(getSetting('maintenance') == 'N')
-                            @yield('content') 
-                        @else
-                            @if(Auth::user()->hasRole('Superadmin'))
-                                @yield('content')
-                            @else
-                                <div class="misc-inner p-2 p-sm-0">
-                                    <div class="w-100 text-center">
-                                        <h2 class="mb-1">Under Maintenance 🛠</h2>
-                                        <p class="mb-3">Sorry for the inconvenience but we're performing some maintenance at the moment</p>
-                                        <img class="img-fluid" width="450" src="{{ asset('app-assets/images/pages/under-maintenance.svg') }}" alt="Under maintenance page" />
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
+                        @yield('content') 
                     </div>
                 </div>
             </div>
@@ -107,15 +94,15 @@
     <div class="drag-target"></div>
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
-        <p class="clearfix mb-0"><span class="float-md-left d-block d-md-inline-block mt-25">COPYRIGHT &copy; {{ date('Y') }} {{ getSetting('copyright')}}</span></span><span class="float-md-right d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
+        <p class="clearfix mb-0"><span class="float-md-left d-block d-md-inline-block mt-25">COPYRIGHT &copy; {{ date('Y') }} YOGYAGROUP</span></span><span class="float-md-right d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span></p>
     </footer>
-    @if(Auth::user()->can('stores-change'))
+    {{-- @if(Auth::user()->can('stores-change'))
     <!-- Modal add Change Store-->
     @include('store.store')
-    @endif
+    @endif --}}
     <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
     <!-- BEGIN: Vendor JS-->
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    <form id="logout-form" action="" method="POST" style="display: none;">
         @csrf
     </form>
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js')}}"></script>
