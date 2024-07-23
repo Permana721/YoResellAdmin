@@ -1,22 +1,69 @@
-@extends('layouts.app')
+@extends('layout.app')
 @section('title', 'Stores')
 
 @section('content')
 
 @include('errors.success')
-  
+
 <div class="card">
   <div class="card-body">
     <section id="table-roles">
       <div class="row">
-          <div class="col-12">
-              <div class="card-datatable table-responsive pt-0">
-                  <table id="detailedTable" class="datatables-basic table">
-                      <thead>
-                      </thead>
-                  </table>
-              </div>
+        <div class="col-12">
+          <div class="card-datatable table-responsive pt-0">
+            <table id="detailedTable" class="datatables-basic table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Full Name</th>
+                  <th>Phone</th>
+                  <th>YMC</th>
+                  <th>CSO</th>
+                  <th>ADMIN</th>
+                  <th>Created</th>
+                  <th>Updated</th>
+                  <th id="statusColumn">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if ($data->isEmpty())
+                <tr class="text-center">
+                  <td colspan="9">Tidak ada User</td>
+                </tr>
+                @else
+                @foreach ($data as $x)
+                <tr class="align-middle">
+                  <td>{{ $x->username }}</td>
+                  <td>{{ $x->full_name }}</td>
+                  <td>{{ $x->phone }}</td>
+                  <td>{{ $x->ymc }}</td>
+                  <td>{{ $x->cso }}</td>
+                  <td>{{ $x->admin }}</td>
+                  <td>{{ $x->created_at }}</td>
+                  <td>{{ $x->updated_at }}</td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="material-icons">menu</i>
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="">View</a>
+                        <a class="dropdown-item" href="">Edit</a>
+                        <form action="" method="POST" style="display:inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                @endforeach
+                @endif
+              </tbody>
+            </table>
           </div>
+        </div>
       </div>
     </section>
   </div>
@@ -25,55 +72,16 @@
 
 @section('scripts')
 <script type="text/javascript">
-  $(document).ready(function(){    
-    showList(); 
-  });
 
-  function showList(oIsiCari){
+
+  $(document).ready(function() {
     let dtdom = '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
-    let arr_col_print =[0,1,2];
-    var oTable = $("#detailedTable").DataTable({
-      processing: true,
-      serverSide: true,
-      bDestroy: true, 
-      oSearch: {"sSearch":oIsiCari},
-      scrollX: false,
-      ajax:{
-        dataType: 'json',
-        url: "{{ route('stores.list') }}",
-        method:"POST"
-      },
-      columns: [
-          { data: 'action', name: 'action', title:'Actions', width: '5%', orderable: false, searchable: false},
-          { data: 'name', name: 'stores.name', title: 'Store Name'},
-          { data: 'initial', name: 'stores.initial', title: 'Initial'},
-          { data: 'city', name: 'stores.city', title: 'City'},
-          { data: 'updated_at', name: 'stores.updated_at', title: 'Updated At'},
-      ],
-      columnDefs: [
-        {
-          className: 'control',
-          orderable: false,
-          responsivePriority: 2,
-          targets: 0
-        },
-        {
-          responsivePriority: 1,
-          targets: 3
-        }
-      ],
-      drawCallback: function (settings) {
-          feather.replace({
-              width: 14,
-              height: 14
-          });
-      },
-      order: [[4, 'desc']],
-      dom:dtdom,
-      displayLength: 10,
+    
+    $('#detailedTable').DataTable({
+      dom: dtdom,
       lengthMenu: [
-              [ 10, 25, 50, 100 ],
-              [ '10', '25', '50', '100' ]
+        [10, 25, 50, 100],
+        ['10', '25', '50', '100']
       ],
       buttons: [
         {
@@ -83,69 +91,28 @@
             'data-toggle': 'modal',
             'data-target': '#modalAddrole'
           },
-          action: function ( e, dt, button, config ) {
-              window.location = "{{ route('stores.create') }}";
+          action: function(e, dt, button, config) {
+            window.location = "";
           }
-          
         }
       ],
       language: {
         paginate: {
-          // remove previous & next text from pagination
           previous: '&nbsp;',
           next: '&nbsp;'
-        }
-      }
+        },
+        info: "Showing _START_ to _END_ of _TOTAL_ entries"
+      },
+      responsive: true
     });
+
     $('div.head-label').html('<h6 class="mb-0">List Stores</h6>');
-    // Order by the grouping
+  });
 
-    oTable.on('draw.dt', function () {
-      $('.my-tooltip').tooltip({
-            trigger: "hover"
-      });
-    });
-  }
-
-  function validasidelete(id,name){
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Store will be delete",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete!'
-      }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-              $.ajax({
-              dataType: 'json',
-              type:'DELETE',
-              url: "{{ route('stores.destroy', ['store'=>"+id+"]) }}",
-              data:{
-                  id:id
-              },
-              success: function(data) {
-                Swal.fire(
-                    'Deleted!',
-                    data.message,
-                    'success'
-                  )
-                  showList('','all','');
-              },
-                  error: function(data) {
-                  alert(data.status);
-              }
-              });
-          } 
-      })
-  }
-    
   $.ajaxSetup({
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
   });
 </script>
 @endsection

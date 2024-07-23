@@ -11,11 +11,11 @@
             </li>
         </ul>
     </div>
-    <br />
+    <br/>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             <h6 class="ml-2 mt-1 breadcrumbs-title hide-on-small-and-down text-secondary"><strong>DASHBOARD</strong></h6>
-            <li class="nav-item navMain {{ \Request::segment(1) == 'dashboard' ? 'active':'' }}">
+            <li class="nav-item navMain {{ \Request::segment(1) == 'home' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="">
                     <i class="material-icons">home</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Home</span>
@@ -23,14 +23,14 @@
             </li>
             
             <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">MEMBER</h5>
-            <li class="nav-item navMain {{ \Request::segment(1) == 'users' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ url('users') }}">
+            <li class="nav-item navMain {{ \Request::segment(1) == 'member' ? 'active':'' }}">
+                <a class="d-flex align-items-center" href="">
                     <i class="material-icons">card_membership</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Member</span>
                 </a>
             </li>
-            <li class="nav-item navMain {{ \Request::segment(1) == 'stores' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ url('stores') }}">
+            <li class="nav-item navMain {{ \Request::segment(1) == 'store' ? 'active':'' }}">
+                <a class="d-flex align-items-center" href="{{ route('store') }}">
                     <i class="material-icons">book</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Store Catalog</span>
                 </a>

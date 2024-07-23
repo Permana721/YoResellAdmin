@@ -54,7 +54,7 @@
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
-                            <span class="user-name font-weight-bolder">Nama</span>
+                            <span class="user-name font-weight-bolder">{{Auth::user()->username}}</span>
                             <span class="user-status">Kepatihan</span>
                         </div>
                         <span class="avatar">
@@ -68,7 +68,7 @@
                         @endcan --}}
                         <a class="dropdown-item" href="{{ url('/users/edit/profile') }}"><i class="mr-50" data-feather="user"></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="mr-50" data-feather="power"></i> Logout</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="mr-50" data-feather="power"></i> Logout</a>
                     </div>
                 </li>
             </ul>
