@@ -14,73 +14,35 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class MemberController extends Controller
 {
-
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
-    }
-
-    public function login()
-    {
-        return view('auth.login');
-    }
-
-    public function register()
-    {
-        return view('auth.register');
-    }
-
-    public function store()
-    {
-        $data = User::all();
-
-        return view('store.index',[
-            'data'  => $data,
-        ]);
-    }
-
-    public function regpros(MemberRequest $request)
-    {
-        $request->validate([
-            'full_name' => 'required',
-            'username' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-            'role' => 'required',
-            'phone' => 'required',
-        ]);
-
-        $data = new User;
-        $data->full_name = $request->full_name;
-        $data->username = $request->username;
-        $data->email = $request->email;
-        $data->password = bcrypt($request->password);
-        $data->role = $request->role;
-        $data->phone = $request->phone;
-        $data->save();
-
-        return back()->with('success', 'Berhasil menambah data member');
-    }
-
-    public function logpros(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('home');
+        if ($request->ajax()) {
+            $data = User::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
         }
 
-        return redirect()->back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
+        $data = User::all();
+        return view('member.index',[
+            'data'  => $data,
+            'title' => 'Member',
         ]);
     }
 
-    public function logout()
+    public function detail(Request $request)
     {
-        Auth::logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-        return redirect('/login');                       
+        if ($request->ajax()) {
+            $data = User::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = User::all();
+        return view('member.detail',[
+            'data'  => $data,
+            'title' => 'Transaction Member Detail',
+        ]);
     }
 }

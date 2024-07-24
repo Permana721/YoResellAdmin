@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicon/android-icon-192x192.png') }}">
     <link rel="manifest" href="{{ url('manifest.json') }}">
     <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
-    <title>YoResell - Admin</title>
+    <title>{{$title}} | YoResellAdmin</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('content/uploads/favicon.png') }}">
     <link href="{{ asset('app-assets/css/google-font/google-fonts.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
@@ -37,6 +37,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>.brand-text-head {font-size: 1em;color: #7367F0;white-space: normal;margin-left: 1.7mm}.home-font{font-size:5em}.home-title{ color: #636363; }.text-align-right{text-align: right;}.fontme{font-size:1.3em}.text-align-center{text-align: center}.uppercased {text-transform: uppercase; }</style>
     @yield('styles')
+    @section('title', 'Home')
 </head>
 <body class="vertical-layout vertical-menu-modern navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="">
     <!-- BEGIN: Header-->
