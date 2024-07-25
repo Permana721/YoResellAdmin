@@ -29,4 +29,84 @@ class StoreController extends Controller
             'title' => 'Store Catalog',
         ]);
     }
+
+    public function transaction(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('store.transaction',[
+            'data'  => $data,
+            'title' => 'Store Transaction',
+        ]);
+    }
+
+    public function region(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('store.region',[
+            'data'  => $data,
+            'title' => 'Region',
+        ]);
+    }
+
+    public function regionStore(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('store.regionStore',[
+            'data'  => $data,
+            'title' => 'Region Store',
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('store.store',[
+            'data'  => $data,
+            'title' => 'Store',
+        ]);
+    }
+
+    public function reportRegistrasi(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('store.registrasi',[
+            'data'  => $data,
+            'title' => 'Report',
+        ]);
+    }
 }

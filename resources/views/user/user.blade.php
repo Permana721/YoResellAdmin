@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Store list')
+@section('title', 'User')
 
 @section('content')
 
@@ -14,13 +14,12 @@
                 <table id="detailedTable" class="datatables-basic table">
                 <thead>
                     <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Initial</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>Latitude</th>
-                    <th>Longtitude</th>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
                     <th>Created</th>
                     <th>Updated</th>
                     <th id="statusColumn">Status</th>
@@ -29,13 +28,12 @@
                 <tbody>
                     @foreach ($data as $x)
                     <tr class="align-middle">
-                    <td>{{ $x->name }}</td>
-                    <td>{{ $x->code }}</td>
-                    <td>{{ $x->initial }}</td>
-                    <td>{{ $x->address }}</td>
-                    <td>{{ $x->city }}</td>
-                    <td>{{ $x->latitude }}</td>
-                    <td>{{ $x->longtitude }}</td>
+                    <td>{{ $x->username }}</td>
+                    <td>{{ $x->full_name }}</td>
+                    <td>{{ $x->phone }}</td>
+                    <td>{{ $x->email }}</td>
+                    <td>{{ $x->role }}</td>
+                    <td style="color: green;">Active</td>
                     <td>{{ $x->created_at }}</td>
                     <td>{{ $x->updated_at }}</td>
                     <td>
@@ -101,7 +99,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Store list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">List User</h6>');
     });
 
     $.ajaxSetup({

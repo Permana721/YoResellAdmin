@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Transaction Member Detail')
+@section('title', 'Transaction Member')
 
 @section('content')
 
@@ -14,21 +14,23 @@
                 <table id="detailedTable" class="datatables-basic table">
                     <thead>
                         <tr>
-                        <th>Store</th>
-                        <th>Name</th>
-                        <th>Member</th>
-                        <th>Omset QTY</th>
-                        <th>Omset Rupiah</th>
+                        <th>No</th>
+                        <th>Periode</th>
+                        <th>Cabang</th>
+                        <th>Type Costumer</th>
+                        <th>Sales QTY</th>
+                        <th>Sales Rupiah</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $x)
                         <tr class="align-middle">
-                        <td>{{ $x->store }}</td>
-                        <td>{{ $x->name }}</td>
-                        <td>{{ $x->member }}</td>
-                        <td>{{ $x->omset_QTY }}</td>
-                        <td>{{ $x->omset_RP }}</td>
+                        <td>{{ $x->tanggal }}</td>
+                        <td>{{ $x->code }}</td>
+                        <td>{{ $x->store_name }}</td>
+                        <td>{{ $x->subcat }}</td>
+                        <td>{{ $x->tillcode }}</td>
+                        <td>{{ $x->plu }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -76,7 +78,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">List Member</h6>');
+        $('div.head-label').html('<h6 class="mb-0">List Transaction</h6>');
     });
 
     $.ajaxSetup({

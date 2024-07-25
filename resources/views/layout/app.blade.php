@@ -63,12 +63,6 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                        {{-- @if(Auth::user()->can('stores-change'))
-                        <a class="dropdown-item" href="javascript:void();" data-toggle="modal" data-target="#modalChangeStore"><i class="fas fa-store mr-50"></i> Change Store</a>
-                        <div class="dropdown-divider"></div>
-                        @endcan --}}
-                        <a class="dropdown-item" href="{{ url('/users/edit/profile') }}"><i class="mr-50" data-feather="user"></i> Profile</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}"><i class="mr-50" data-feather="power"></i> Logout</a>
                     </div>
                 </li>

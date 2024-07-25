@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Transaction Member Detail')
+@section('title', 'Transaction Store')
 
 @section('content')
 
@@ -12,26 +12,22 @@
             <div class="col-12">
             <div class="card-datatable table-responsive pt-0">
                 <table id="detailedTable" class="datatables-basic table">
-                    <thead>
-                        <tr>
-                        <th>Store</th>
-                        <th>Name</th>
-                        <th>Member</th>
-                        <th>Omset QTY</th>
-                        <th>Omset Rupiah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $x)
-                        <tr class="align-middle">
-                        <td>{{ $x->store }}</td>
-                        <td>{{ $x->name }}</td>
-                        <td>{{ $x->member }}</td>
-                        <td>{{ $x->omset_QTY }}</td>
-                        <td>{{ $x->omset_RP }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                <thead>
+                    <tr>
+                    <th>Store</th>
+                    <th>Omset QTY</th>
+                    <th>Omset Rupiah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $x)
+                    <tr class="align-middle">
+                    <td>{{ $x->store }}</td>
+                    <td>{{ $x->omset_qty}}</td>
+                    <td>{{ $x->omset_rupiah }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
                 </table>
             </div>
             </div>
@@ -76,7 +72,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">List Member</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Transaction list</h6>');
     });
 
     $.ajaxSetup({

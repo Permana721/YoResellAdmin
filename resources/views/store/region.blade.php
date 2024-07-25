@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Transaction Member Detail')
+@section('title', 'Region list')
 
 @section('content')
 
@@ -12,26 +12,39 @@
             <div class="col-12">
             <div class="card-datatable table-responsive pt-0">
                 <table id="detailedTable" class="datatables-basic table">
-                    <thead>
-                        <tr>
-                        <th>Store</th>
-                        <th>Name</th>
-                        <th>Member</th>
-                        <th>Omset QTY</th>
-                        <th>Omset Rupiah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $x)
-                        <tr class="align-middle">
-                        <td>{{ $x->store }}</td>
-                        <td>{{ $x->name }}</td>
-                        <td>{{ $x->member }}</td>
-                        <td>{{ $x->omset_QTY }}</td>
-                        <td>{{ $x->omset_RP }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th id="statusColumn">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $x)
+                    <tr class="align-middle">
+                    <td>{{ $x->name }}</td>
+                    <td>{{ $x->created_at }}</td>
+                    <td>{{ $x->updated_at }}</td>
+                    <td>
+                        <div class="dropdown">
+                        <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">menu</i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="">View</a>
+                            <a class="dropdown-item" href="">Edit</a>
+                            <form action="" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </div>
+                        </div>
+                    </td>
+                    </tr>
+                    @endforeach
+                </tbody>
                 </table>
             </div>
             </div>
@@ -76,7 +89,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">List Member</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Region list</h6>');
     });
 
     $.ajaxSetup({

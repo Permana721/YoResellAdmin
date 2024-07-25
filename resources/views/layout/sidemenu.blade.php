@@ -1,3 +1,6 @@
+@php
+$user = Auth::user();
+@endphp
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
@@ -21,7 +24,54 @@
                     <span class="menu-title text-truncate" data-i18n="Home">Home</span>
                 </a>
             </li>
-            
+            @if($user->role == 'Administrator')
+                <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">CONFIG</h5>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'menu' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('menu') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">Menu</span>
+                    </a>
+                </li>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'role' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('role') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="role">Role</span>
+                    </a>
+                </li>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'role-menu' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('role-menu') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">Role Menu</span>
+                    </a>
+                </li>
+
+                <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">MASTER</h5>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'region' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('region') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">Regional</span>
+                    </a>
+                </li>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'region-store' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('region-store') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">Regional/Store</span>
+                    </a>
+                </li>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'store' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('store') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">Store</span>
+                    </a>
+                </li>
+                <li class="nav-item navMain {{ \Request::segment(1) == 'user' ? 'active':'' }}">
+                    <a class="d-flex align-items-center" href="{{ route('user') }}">
+                        <i class="material-icons">menu</i>
+                        <span class="menu-title text-truncate" data-i18n="Home">User</span>
+                    </a>
+                </li>
+            @endif
+
             <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">MEMBER</h5>
             <li class="nav-item navMain {{ \Request::segment(1) == 'member' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('member') }}">
@@ -43,6 +93,14 @@
                     <span class="menu-title text-truncate" data-i18n="Home">Member Detail</span>
                 </a>
             </li>
+        @if($user->role == 'Administrator')
+            <li class="nav-item navMain {{ \Request::segment(1) == 'report-registrasi' ? 'active':'' }}">
+                <a class="d-flex align-items-center" href="{{ route('report-registrasi') }}">
+                    <i class="material-icons">assessment</i>
+                    <span class="menu-title text-truncate" data-i18n="Home">Registrasi</span>
+                </a>
+            </li>
+        @endif
             <li class="nav-item navMain {{ \Request::segment(1) == 'sales-detail' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('sales-detail') }}">
                     <i class="material-icons">laptop_chromebook</i>
@@ -61,7 +119,7 @@
                     <span class="menu-title text-truncate" data-i18n="Home">Transaction Member</span>
                 </a>
             </li>
-            <li class="nav-item navMain {{ \Request::segment(1) == 'transaction-store' ? 'active':'' }}">
+            <li class="nav-item navMain mb-2 {{ \Request::segment(1) == 'transaction-store' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('transaction-store') }}">
                     <i class="material-icons">business</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Transaction Store</span>

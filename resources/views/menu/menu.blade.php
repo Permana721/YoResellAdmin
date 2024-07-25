@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Store list')
+@section('title', 'Menu')
 
 @section('content')
 
@@ -15,14 +15,11 @@
                 <thead>
                     <tr>
                     <th>Name</th>
-                    <th>Code</th>
-                    <th>Initial</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>Latitude</th>
-                    <th>Longtitude</th>
-                    <th>Created</th>
-                    <th>Updated</th>
+                    <th>Group Name</th>
+                    <th>Url</th>
+                    <th>Icon</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <th id="statusColumn">Status</th>
                     </tr>
                 </thead>
@@ -30,12 +27,9 @@
                     @foreach ($data as $x)
                     <tr class="align-middle">
                     <td>{{ $x->name }}</td>
-                    <td>{{ $x->code }}</td>
-                    <td>{{ $x->initial }}</td>
-                    <td>{{ $x->address }}</td>
-                    <td>{{ $x->city }}</td>
-                    <td>{{ $x->latitude }}</td>
-                    <td>{{ $x->longtitude }}</td>
+                    <td>{{ $x->group_name }}</td>
+                    <td>{{ $x->url }}</td>
+                    <td>{{ $x->icon }}</td>
                     <td>{{ $x->created_at }}</td>
                     <td>{{ $x->updated_at }}</td>
                     <td>
@@ -101,7 +95,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Store list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">List Menu</h6>');
     });
 
     $.ajaxSetup({

@@ -98,7 +98,7 @@
         lengthChange: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">List Member</h6>');
+        $('div.head-label').html('<h6 class="mb-0">List Sales</h6>');
     });
 
     $.ajaxSetup({
