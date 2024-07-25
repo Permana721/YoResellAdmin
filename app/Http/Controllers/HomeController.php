@@ -31,6 +31,22 @@ class HomeController extends Controller
         return view('auth.register');
     }
 
+    public function user(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = User::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = User::all();
+        return view('user.user',[
+            'data'  => $data,
+            'title' => 'User list',
+        ]);
+    }
+
     public function regpros(MemberRequest $request)
     {
         $request->validate([
