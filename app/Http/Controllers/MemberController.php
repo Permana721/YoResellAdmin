@@ -33,16 +33,32 @@ class MemberController extends Controller
     public function detail(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::latest()->get();
+            $data = Member::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->make(true);
         }
 
-        $data = User::all();
+        $data = Member::all();
         return view('member.detail',[
             'data'  => $data,
             'title' => 'Transaction Member Detail',
+        ]);
+    }
+
+    public function summary(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('member.transaction',[
+            'data'  => $data,
+            'title' => 'Transaction Member Summary',
         ]);
     }
 }
