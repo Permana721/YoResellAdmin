@@ -29,4 +29,20 @@ class SalesController extends Controller
             'title' => 'Sales Detail',
         ]);
     }
+
+    public function monthly(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        $data = Member::all();
+        return view('sales.monthly',[
+            'data'  => $data,
+            'title' => 'Sales Monthly',
+        ]);
+    }
 }
