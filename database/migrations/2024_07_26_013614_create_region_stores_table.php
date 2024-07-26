@@ -15,8 +15,12 @@ class CreateRegionStoresTable extends Migration
     {
         Schema::create('region_stores', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
+            $table->bigInteger('region_id');
+            $table->string('store_code', 3);
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->index(['id', 'region_id', 'store_code']);
+        });        
     }
 
     /**
@@ -26,6 +30,6 @@ class CreateRegionStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('region__stores');
+        Schema::dropIfExists('region_stores');
     }
 }

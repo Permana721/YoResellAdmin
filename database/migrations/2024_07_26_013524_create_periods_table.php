@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoleHasPermissions extends Migration
+class CreatePeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRoleHasPermissions extends Migration
      */
     public function up()
     {
-        Schema::create('role__has__permissions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create('periods', function (Blueprint $table) {
+            $table->date('date_from');
+            $table->date('date_to');
+        });        
     }
 
     /**
@@ -26,6 +26,6 @@ class CreateRoleHasPermissions extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role__has__permissions');
+        Schema::dropIfExists('periods');
     }
 }

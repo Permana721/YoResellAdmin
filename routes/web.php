@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MemberController;
@@ -19,31 +20,32 @@ use App\Http\Controllers\MemberController;
 |
 */
 
-Route::get('/login', [HomeController::class, 'login'])->name('login');
-Route::get('/logout', [HomeController::class, 'logout'])->name('logout');
-Route::get('/register', [HomeController::class, 'register']);
-Route::post('/regpros', [HomeController::class, 'regpros'])->name('regpros');
-Route::post('/logpros', [HomeController::class, 'logpros'])->name('logpros');
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/register', [UserController::class, 'register']);
+Route::post('/regpros', [UserController::class, 'regpros'])->name('regpros');
+Route::post('/logpros', [UserController::class, 'logpros'])->name('logpros');
 
 Route::middleware(['login'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::fallback(function () {
-        return redirect('/home');
+        return back();
     });
 
-    Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
-    Route::get('/role', [MenuController::class, 'role'])->name('role');
-    Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
+        Route::get('/role', [MenuController::class, 'role'])->name('role');
+        Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
+        Route::get('/user', [HomeController::class, 'user'])->name('user');
+        Route::get('/store', [StoreController::class, 'store'])->name('store');
+        Route::get('/region', [StoreController::class, 'region'])->name('region');
+        Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');
+        Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
+    });
 
-    Route::get('/user', [HomeController::class, 'user'])->name('user');
-
-    Route::get('/store', [StoreController::class, 'store'])->name('store');
-    Route::get('/region', [StoreController::class, 'region'])->name('region');
-    Route::get('/catalog', [StoreController::class, 'index'])->name('catalog');
-    Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');
     Route::get('/transaction-store', [StoreController::class, 'transaction'])->name('transaction-store');
-    Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
+    Route::get('/catalog', [StoreController::class, 'index'])->name('catalog');
 
     Route::get('/member', [MemberController::class, 'index'])->name('member');
     Route::get('/transaction-member', [MemberController::class, 'detail'])->name('transaction-member');

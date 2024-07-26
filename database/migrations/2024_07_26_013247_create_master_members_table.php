@@ -14,9 +14,13 @@ class CreateMasterMembersTable extends Migration
     public function up()
     {
         Schema::create('master_members', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+            $table->string('fullname', 200)->nullable();
+            $table->string('mobile_no', 30)->nullable();
+            $table->string('card_code', 30)->nullable();
+            $table->string('customer_code', 200)->nullable();
+            $table->index('card_code');
+            $table->index('customer_code');
+        });        
     }
 
     /**

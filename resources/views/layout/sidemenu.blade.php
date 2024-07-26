@@ -24,6 +24,7 @@ $user = Auth::user();
                     <span class="menu-title text-truncate" data-i18n="Home">Home</span>
                 </a>
             </li>
+            
             @if($user->role == 'Administrator')
                 <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">CONFIG</h5>
                 <li class="nav-item navMain {{ \Request::segment(1) == 'menu' ? 'active':'' }}">

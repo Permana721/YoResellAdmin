@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterArticleTable extends Migration
+class CreateCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateMasterArticleTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_article', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
+            $table->integer('member_id');
+            $table->string('number', 16)->unique();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+        });        
     }
 
     /**
@@ -26,6 +29,6 @@ class CreateMasterArticleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_article');
+        Schema::dropIfExists('cards');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoreMonthsTable extends Migration
+class CreateWhatsappsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateStoreMonthsTable extends Migration
      */
     public function up()
     {
-        Schema::create('store__months', function (Blueprint $table) {
+        Schema::create('whatsapps', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
+            $table->string('name', 200)->nullable();
+            $table->string('number')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+        });        
     }
 
     /**
@@ -26,6 +28,6 @@ class CreateStoreMonthsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store__months');
+        Schema::dropIfExists('whatsapps');
     }
 }
