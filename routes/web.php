@@ -20,11 +20,14 @@ use App\Http\Controllers\MemberController;
 |
 */
 
-Route::get('/login', [UserController::class, 'login'])->name('login');
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('/register', [UserController::class, 'register']);
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [UserController::class, 'login'])->name('login');
+    Route::get('/register', [UserController::class, 'register']);
+});
 Route::post('/regpros', [UserController::class, 'regpros'])->name('regpros');
 Route::post('/logpros', [UserController::class, 'logpros'])->name('logpros');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['login'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -37,7 +40,12 @@ Route::middleware(['login'])->group(function () {
         Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
         Route::get('/role', [MenuController::class, 'role'])->name('role');
         Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
-        Route::get('/user', [HomeController::class, 'user'])->name('user');
+
+        Route::get('/user', [UserController::class, 'index'])->name('user');
+        Route::get('/user/create', [UserController::class, 'create'])->name('create.user');
+        Route::post('/user/create/addDataUser', [UserController::class, 'addDataUser'])->name('addDataUser');
+
+        Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
         Route::get('/store', [StoreController::class, 'store'])->name('store');
         Route::get('/region', [StoreController::class, 'region'])->name('region');
         Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');

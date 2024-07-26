@@ -17,13 +17,13 @@ class MemberController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::latest()->get();
+            $data = Member::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->make(true);
         }
 
-        $data = User::all();
+        $data = Member::all();
         return view('member.index',[
             'data'  => $data,
             'title' => 'Member',

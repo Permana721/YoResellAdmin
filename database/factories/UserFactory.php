@@ -14,8 +14,8 @@ class UserFactory extends Factory
         return [
             'full_name' => $this->faker->name,
             'username' => $this->faker->unique()->userName,
-            'password' => bcrypt('password'), // password
-            'role' => $this->faker->numberBetween(1, 5),
+            'password' => bcrypt('password'), 
+            'role' => $this->faker->randomElement(['Administrator', 'CSO', 'User']),
             'store_code' => $this->faker->regexify('[A-Z]{3}-[0-9]{4}'),
             'remember_token' => Str::random(10),
             'created_at' => now(),
