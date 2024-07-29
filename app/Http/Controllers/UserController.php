@@ -78,25 +78,29 @@ class UserController extends Controller
     public function getUsers(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::select(['username', 'full_name', 'phone', 'email', 'role', 'created_at', 'updated_at'])
+            $data = User::select(['id', 'username', 'full_name', 'phone', 'email', 'role', 'created_at', 'updated_at'])
                         ->get()
                         ->map(function($user) {
-                            $user->status = 'Active'; // or any logic to set the status
+                            $user->status = 'Active';
+                            $user->hashed_id = base64_encode($user->id); // Menambahkan hashed ID
                             return $user;
                         });
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
+                    $deleteUrl = route('deleteUser', $row->id);
+                    $editUrl = route('editUser', $row->hashed_id); // Menggunakan hashed ID
+
                     $btn = '<div class="dropdown">
                             <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">menu</i>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">View</a>
-                                <a class="dropdown-item" href="#">Edit</a>
-                                <form action="" method="POST" style="display:inline;">
-                                    '.csrf_field().method_field('DELETE').'
+                                <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
+                                <form action="'.$deleteUrl.'" method="POST">
+                                    <input type="hidden" name="_token" value="'.csrf_token().'">
+                                    '.method_field('DELETE').'
                                     <button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                 </form>
                             </div>
@@ -107,6 +111,18 @@ class UserController extends Controller
                 ->make(true);
         }
     }
+
+    public function edit($hashedId)
+    {
+        $id = base64_decode($hashedId);
+        $data = User::findOrFail($id);
+
+        return view('user.edit',[
+            'data'  => $data,
+            'title' => 'User list',
+        ]);
+    }
+
 
     public function create()
     {
@@ -136,6 +152,35 @@ class UserController extends Controller
         $data->save();
 
         return redirect()->route('user');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = User::findOrFail($id);
+
+        $request->validate([
+            'full_name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'role' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $data->full_name = $request->full_name;
+        $data->username = $request->username;
+        $data->email = $request->email;
+        $data->role = $request->role;
+        $data->phone = $request->phone;
+        $data->save();
+
+        return redirect()->route('user');
+    }
+
+    public function destroy($id)
+    {
+        $User = User::findOrFail($id);
+        $User->delete();
+        return back();
     }
 
     public function logout()
