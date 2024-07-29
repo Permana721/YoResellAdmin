@@ -59,6 +59,8 @@ Route::middleware(['login'])->group(function () {
     Route::get('/catalog', [StoreController::class, 'index'])->name('catalog');
 
     Route::get('/member', [MemberController::class, 'index'])->name('member');
+    Route::get('/member/create', [MemberController::class, 'create'])->name('create.member');
+    Route::get('getMember', [MemberController::class, 'getMember'])->name('member.getMember');
     Route::get('/transaction-member', [MemberController::class, 'detail'])->name('transaction-member');
     Route::get('/transaction-member-summary', [MemberController::class, 'summary'])->name('transaction-member-summary');
 
