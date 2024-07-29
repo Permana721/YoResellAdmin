@@ -56,7 +56,7 @@
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name font-weight-bolder">{{Auth::user()->username}}</span>
-                            <span class="user-status">Kepatihan</span>
+                            <span class="user-status">{{Auth::user()->role}}</span>
                         </div>
                         <span class="avatar">
                             <img class="round" id="avatar_picture" src="{{ asset('pictures/users/default.png') }}" onerror="this.src='{{ asset('app-assets/images/avatars/default.png')}}';" alt="avatar" height="40" width="40">
@@ -101,6 +101,7 @@
         @csrf
     </form>
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js')}}"></script>
