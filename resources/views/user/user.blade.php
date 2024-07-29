@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'User')
+@section('title', 'User list')
 
 @section('content')
 
@@ -85,7 +85,7 @@
             scrollX: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">List User</h6>');
+        $('div.head-label').html('<h6 class="mb-0">User list</h6>');
     });
 
     $.ajaxSetup({

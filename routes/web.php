@@ -41,10 +41,13 @@ Route::middleware(['login'])->group(function () {
         Route::get('/role', [MenuController::class, 'role'])->name('role');
         Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
 
+        Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('deleteUser');
         Route::get('/user', [UserController::class, 'index'])->name('user');
         Route::get('/user/create', [UserController::class, 'create'])->name('create.user');
         Route::post('/user/create/addDataUser', [UserController::class, 'addDataUser'])->name('addDataUser');
-
+        Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('editUser');
+        Route::put('/user/{id}/update', [UserController::class, 'update'])->name('updateDataUser');
+        
         Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
         Route::get('/store', [StoreController::class, 'store'])->name('store');
         Route::get('/region', [StoreController::class, 'region'])->name('region');
