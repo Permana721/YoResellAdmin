@@ -35,7 +35,6 @@
 @endsection
 
 @section('scripts')
-
 <script type="text/javascript">
     $(document).ready(function() {
         let dtdom = '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
@@ -53,8 +52,20 @@
                 { data: 'status', name: 'status', render: function(data, type, row) {
                     return '<span style="color: green;">' + data + '</span>';
                 }},
-                { data: 'created_at', name: 'created_at' },
-                { data: 'updated_at', name: 'updated_at' },
+                { 
+                    data: 'created_at', 
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
+                },
+                { 
+                    data: 'updated_at', 
+                    name: 'updated_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
+                },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             dom: dtdom,

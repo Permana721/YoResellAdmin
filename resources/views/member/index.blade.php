@@ -14,7 +14,7 @@
                                     <th>Username</th>
                                     <th>Full Name</th>
                                     <th>Phone</th>
-                                    <th>NRIC</th>
+                                    <th>YMC</th>
                                     <th>CSO</th>
                                     <th>Admin</th>
                                     <th>Created</th>
@@ -71,7 +71,7 @@
             buttons: [
                 {
                     text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
-                    className: 'create-new btn btn-primary',
+                    className: 'create-new btn btn-primary d-none',
                     attr: {
                         'data-toggle': 'modal',
                         'data-target': '#modalAddrole'
@@ -98,7 +98,7 @@
             }
         });
 
-        $('div.head-label').html('<h6 class="mb-0">User list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Member list</h6>');
     });
 
     $.ajaxSetup({

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StoreController;
@@ -38,13 +39,21 @@ Route::middleware(['login'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
-        Route::get('/role', [MenuController::class, 'role'])->name('role');
-        Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
 
+        Route::get('/role', [RoleController::class, 'role'])->name('role');
+        Route::get('/get-role', [RoleController::class, 'getRole'])->name('role.getRole');
+        Route::get('/role/create', [RoleController::class, 'create'])->name('create.role');
+        Route::post('/role/create/add-data-role', [RoleController::class, 'addDataRole'])->name('add.data.role');
+        Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('edit.role');
+        Route::put('/role/{id}/update', [RoleController::class, 'update'])->name('update.data.role');
+        Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('delete.role');
+
+        Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
+        
         Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('deleteUser');
         Route::get('/user', [UserController::class, 'index'])->name('user');
         Route::get('/user/create', [UserController::class, 'create'])->name('create.user');
-        Route::post('/user/create/addDataUser', [UserController::class, 'addDataUser'])->name('addDataUser');
+        Route::post('/user/create/add-data-user', [UserController::class, 'addDataUser'])->name('addDataUser');
         Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('editUser');
         Route::put('/user/{id}/update', [UserController::class, 'update'])->name('updateDataUser');
         
@@ -59,8 +68,11 @@ Route::middleware(['login'])->group(function () {
     Route::get('/catalog', [StoreController::class, 'index'])->name('catalog');
 
     Route::get('/member', [MemberController::class, 'index'])->name('member');
-    Route::get('/member/create', [MemberController::class, 'create'])->name('create.member');
     Route::get('getMember', [MemberController::class, 'getMember'])->name('member.getMember');
+    Route::get('/member/create', [MemberController::class, 'create'])->name('create.member');
+    Route::get('/member/{id}/edit', [MemberController::class, 'edit'])->name('edit.member');
+    Route::put('/member/{id}/update', [MemberController::class, 'update'])->name('update.data.member');
+
     Route::get('/transaction-member', [MemberController::class, 'detail'])->name('transaction-member');
     Route::get('/transaction-member-summary', [MemberController::class, 'summary'])->name('transaction-member-summary');
 
