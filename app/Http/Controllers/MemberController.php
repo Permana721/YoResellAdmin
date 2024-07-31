@@ -41,12 +41,16 @@ class MemberController extends Controller
     public function getMember(Request $request)
     {
         if ($request->ajax()) {
-            $data = Member::select(['id', 'username', 'full_name', 'phone_1', 'nric', 'approve_cso', 'approve_admin', 'created_at', 'updated_at']);
+            $data = Member::select(['id', 'username', 'full_name', 'phone_1', 'nric', 'approve_cso', 'approve_admin', 'created_at', 'updated_at'])
+            ->get()
+            ->map(function($member) {
+                $member->hashed_id = base64_encode($member->id);
+                return $member;
+            });
 
             return DataTables::of($data)
                 ->addColumn('action', function($row){
-                    $deleteUrl = route('deleteUser', $row->id);
-                    $editUrl = route('editUser', $row->id);
+                    $editUrl = route('edit.member', $row->hashed_id);
 
                     $btn = '<div class="dropdown">
                             <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,11 +58,6 @@ class MemberController extends Controller
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
-                                <form action="'.$deleteUrl.'" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_token" value="'.csrf_token().'">
-                                    '.method_field('DELETE').'
-                                    <button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure?\')">Delete</button>
-                                </form>
                             </div>
                         </div>';
                     return $btn;
@@ -74,7 +73,45 @@ class MemberController extends Controller
                 ->make(true);
         }
 
-        return view('members.index');
+        return view('member.index');
+    }
+
+    public function edit($hashedId)
+    {
+        $id = base64_decode($hashedId);
+        $data = Member::findOrFail($id);
+
+        return view('member.edit',[
+            'data'  => $data,
+            'title' => 'Member list',
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = Member::findOrFail($id);
+
+        $request->validate([
+            'username' => 'required',
+            'full_name' => 'required',
+            'address' => 'required',
+            'phone1' => 'required',
+            'email' => 'required',
+            'nric' => 'required',
+            'approve_cso' => 'required',
+            'approve_admin' => 'required|email',
+            'role' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $data->username = $request->username;
+        $data->full_name = $request->full_name;
+        $data->email = $request->email;
+        $data->role = $request->role;
+        $data->phone = $request->phone;
+        $data->save();     
+
+        return redirect()->route('role');
     }
 
     public function detail(Request $request)
