@@ -69,7 +69,7 @@ class UserController extends Controller
         }
 
         $data = User::all();
-        return view('user.user',[
+        return view('user.index',[
             'data'  => $data,
             'title' => 'User list',
         ]);
@@ -82,7 +82,7 @@ class UserController extends Controller
                         ->get()
                         ->map(function($user) {
                             $user->status = 'Active';
-                            $user->hashed_id = base64_encode($user->id); // Menambahkan hashed ID
+                            $user->hashed_id = base64_encode($user->id);
                             return $user;
                         });
 
@@ -90,7 +90,7 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $deleteUrl = route('deleteUser', $row->id);
-                    $editUrl = route('editUser', $row->hashed_id); // Menggunakan hashed ID
+                    $editUrl = route('editUser', $row->hashed_id); 
 
                     $btn = '<div class="dropdown">
                             <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -101,7 +101,7 @@ class UserController extends Controller
                                 <form action="'.$deleteUrl.'" method="POST">
                                     <input type="hidden" name="_token" value="'.csrf_token().'">
                                     '.method_field('DELETE').'
-                                    <button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                                    <button type="submit" class="dropdown-item w-100" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                 </form>
                             </div>
                         </div>';
