@@ -92,26 +92,37 @@ class MemberController extends Controller
         $data = Member::findOrFail($id);
 
         $request->validate([
+            'phone_1' => 'required',
             'username' => 'required',
             'full_name' => 'required',
-            'address' => 'required',
-            'phone1' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'nric' => 'required',
-            'approve_cso' => 'required',
-            'approve_admin' => 'required|email',
-            'role' => 'required',
-            'phone' => 'required',
+            'keterangan' => 'required',
+            'address' => 'required',
+            'tokopedia' => 'required',
+            'shopee' => 'required',
+            'bukalapak' => 'required',
+            'lain_lain' => 'required',
+            'type_customer' => 'required',
+            'brand' => 'required',
         ]);
 
+        $data->phone_1 = $request->phone_1;
         $data->username = $request->username;
         $data->full_name = $request->full_name;
-        $data->email = $request->email;
-        $data->role = $request->role;
-        $data->phone = $request->phone;
+        $data->address = $request->address;
+        $data->nric = $request->nric;
+        $data->keterangan = $request->keterangan;
+        $data->address = $request->address;
+        $data->tokopedia = $request->tokopedia;
+        $data->shopee = $request->shopee;
+        $data->bukalapak = $request->bukalapak;
+        $data->lain_lain = $request->lain_lain;
+        $data->type_customer = $request->type_customer;
+        $data->brand = $request->brand;
         $data->save();     
 
-        return redirect()->route('role');
+        return redirect()->route('member');
     }
 
     public function detail(Request $request)

@@ -1,32 +1,29 @@
 @extends('layout.app')
-@section('title', 'Role')
+@section('title', 'Menu list')
 
 @section('content')
-
-@include('errors.success')
-
 <div class="card">
     <div class="card-body">
         <section id="table-roles">
-        <div class="row">
-            <div class="col-12">
-            <div class="card-datatable table-responsive pt-0">
-                <table id="detailedTable" class="datatables-basic table">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th id="statusColumn">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data akan dimuat dari server-side -->
-                </tbody>
-                </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table id="detailedTable" class="datatables-basic table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Group Name</th>
+                                    <th>Url</th>
+                                    <th>Icon</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
         </section>
     </div>
 </div>
@@ -40,9 +37,12 @@
         $('#detailedTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('role.getRole') }}",
+            ajax: "{{ route('menu.getMenu') }}",
             columns: [
                 { data: 'name', name: 'name' },
+                { data: 'group_name', name: 'group_name' },
+                { data: 'url', name: 'url' },
+                { data: 'icon', name: 'icon' },
                 { 
                     data: 'created_at', 
                     name: 'created_at',
@@ -73,7 +73,7 @@
                         'data-target': '#modalAddrole'
                     },
                     action: function(e, dt, button, config) {
-                        window.location = "{{route('create.role')}}";
+                        window.location = "{{route('create.menu')}}";
                     }
                 }
             ],
@@ -87,7 +87,7 @@
             scrollX: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Role list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Menu list</h6>');
     });
 
     $.ajaxSetup({

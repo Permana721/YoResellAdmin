@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\RegionController;
 
 
 /*
@@ -39,9 +40,23 @@ Route::middleware(['login'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::get('/menu', [MenuController::class, 'menu'])->name('menu');
+        Route::get('/menu/get-menu', [MenuController::class, 'getMenu'])->name('menu.getMenu');
+        Route::get('/menu/create', [MenuController::class, 'create'])->name('create.menu');
+        Route::post('/menu/create/add-data-menu', [MenuController::class, 'addDataMenu'])->name('add.data.menu');
+        Route::get('/menu/{id}/edit', [MenuController::class, 'edit'])->name('edit.menu');
+        Route::put('/menu/{id}/update', [MenuController::class, 'update'])->name('update.data.menu');
+        Route::delete('/menu/{id}/destroy', [MenuController::class, 'destroy'])->name('delete.menu');
+
+        Route::get('/region', [RegionController::class, 'region'])->name('region');
+        Route::get('/region/get-region', [RegionController::class, 'getRegion'])->name('region.getRegion');
+        Route::get('/region/create', [RegionController::class, 'create'])->name('create.region');
+        Route::post('/region/create/add-data-menu', [RegionController::class, 'addDataRegion'])->name('add.data.region');
+        Route::get('/region/{id}/edit', [RegionController::class, 'edit'])->name('edit.region');
+        Route::put('/region/{id}/update', [RegionController::class, 'update'])->name('update.data.region');
+        Route::delete('/region/{id}/destroy', [RegionController::class, 'destroy'])->name('delete.region');
 
         Route::get('/role', [RoleController::class, 'role'])->name('role');
-        Route::get('/get-role', [RoleController::class, 'getRole'])->name('role.getRole');
+        Route::get('/role/get-role', [RoleController::class, 'getRole'])->name('role.getRole');
         Route::get('/role/create', [RoleController::class, 'create'])->name('create.role');
         Route::post('/role/create/add-data-role', [RoleController::class, 'addDataRole'])->name('add.data.role');
         Route::get('/role/{id}/edit', [RoleController::class, 'edit'])->name('edit.role');
@@ -59,7 +74,6 @@ Route::middleware(['login'])->group(function () {
         
         Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
         Route::get('/store', [StoreController::class, 'store'])->name('store');
-        Route::get('/region', [StoreController::class, 'region'])->name('region');
         Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');
         Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
     });
