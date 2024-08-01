@@ -54,7 +54,7 @@ class MemberFactory extends Factory
             'lain_lain' => $this->faker->word,
             'remember_token' => Str::random(10),
             'photo' => $this->faker->imageUrl(),
-            'type_customer' => $this->faker->word,
+            'type_customer' => $this->faker->randomElement(['SPG', 'UMUM']),
             'brand' => $this->faker->word,
         ];
     }
