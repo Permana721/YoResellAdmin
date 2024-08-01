@@ -1,107 +1,106 @@
 @extends('layout.app')
-@section('title', 'Catalog list')
+@section('title', 'Store List')
 
 @section('content')
-
-@include('errors.success')
-
 <div class="card">
     <div class="card-body">
         <section id="table-roles">
-        <div class="row">
-            <div class="col-12">
-            <div class="card-datatable table-responsive pt-0">
-                <table id="detailedTable" class="datatables-basic table">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Store</th>
-                    <th>Whatsapp</th>
-                    <th>Url Catalog</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th id="statusColumn">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $x)
-                    <tr class="align-middle">
-                    <td>{{ $x->name }}</td>
-                    <td>{{ $x->store }}</td>
-                    <td>{{ $x->whatsapp }}</td>
-                    <td>{{ $x->url }}</td>
-                    <td>{{ $x->created_at }}</td>
-                    <td>{{ $x->updated_at }}</td>
-                    <td>
-                        <div class="dropdown">
-                        <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">menu</i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="">View</a>
-                            <a class="dropdown-item" href="">Edit</a>
-                            <form action="" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        </div>
-                        </div>
-                    </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table id="detailedTable" class="datatables-basic table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Initial</th>
+                                    <th>Address</th>
+                                    <th>city</th>
+                                    <th>Latitude</th>
+                                    <th>Longtitude</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
         </section>
     </div>
-    </div>
-    @endsection
+</div>
+@endsection
 
-    @section('scripts')
-    <script type="text/javascript">
+@section('scripts')
+<script type="text/javascript">
     $(document).ready(function() {
         let dtdom = '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
-        
+
         $('#detailedTable').DataTable({
-        dom: dtdom,
-        lengthMenu: [
-            [10, 25, 50, 100],
-            ['10', '25', '50', '100']
-        ],
-        buttons: [
-            {
-            text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
-            className: 'create-new btn btn-primary',
-            attr: {
-                'data-toggle': 'modal',
-                'data-target': '#modalAddrole'
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('store.getStore') }}",
+            columns: [
+                { data: 'name', name: 'name' },
+                { data: 'store_code', name: 'store_code' },
+                { data: 'initial_store', name: 'initial_store' },
+                { data: 'address', name: 'address' },
+                { data: 'city', name: 'city' },
+                { data: 'latitude', name: 'latitude' },
+                { data: 'longitude', name: 'longitude' },
+                
+                { 
+                    data: 'created_at', 
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
+                },
+                { 
+                    data: 'updated_at', 
+                    name: 'updated_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
+                },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            dom: dtdom,
+            lengthMenu: [
+                [10, 25, 50, 75, 100],
+                ['10', '25', '50', '75', '100']
+            ],
+            buttons: [
+                {
+                    text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
+                    className: 'create-new btn btn-primary',
+                    attr: {
+                        'data-toggle': 'modal',
+                        'data-target': '#modalAddrole'
+                    },
+                    action: function(e, dt, button, config) {
+                        window.location = "{{route('create.store')}}";
+                    }
+                }
+            ],
+            language: {
+                paginate: {
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                },
+                info: "Showing _START_ to _END_ of _TOTAL_ entries"
             },
-            action: function(e, dt, button, config) {
-                window.location = "";
-            }
-            }
-        ],
-        language: {
-            paginate: {
-            previous: '&nbsp;',
-            next: '&nbsp;'
-            },
-            info: "Showing _START_ to _END_ of _TOTAL_ entries"
-        },
-        responsive: true,
-        lengthChange: true
+            scrollX: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Catalog list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Store list</h6>');
     });
 
     $.ajaxSetup({
         headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    </script>
+</script>
 @endsection

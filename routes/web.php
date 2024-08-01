@@ -65,15 +65,22 @@ Route::middleware(['login'])->group(function () {
 
         Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
         
-        Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('deleteUser');
         Route::get('/user', [UserController::class, 'index'])->name('user');
         Route::get('/user/create', [UserController::class, 'create'])->name('create.user');
         Route::post('/user/create/add-data-user', [UserController::class, 'addDataUser'])->name('addDataUser');
         Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('editUser');
         Route::put('/user/{id}/update', [UserController::class, 'update'])->name('updateDataUser');
+        Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('deleteUser');
         
-        Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
         Route::get('/store', [StoreController::class, 'store'])->name('store');
+        Route::get('/store/get-store', [StoreController::class, 'getStore'])->name('store.getStore');
+        Route::get('/store/create', [StoreController::class, 'create'])->name('create.store');
+        Route::post('/store/create/add-data-store', [StoreController::class, 'addDataStore'])->name('add.data.store');
+        Route::get('/store/{id}/edit', [StoreController::class, 'edit'])->name('edit.store');
+        Route::put('/store/{id}/update', [StoreController::class, 'update'])->name('update.data.store');
+        Route::delete('/store/{id}/destroy', [StoreController::class, 'destroy'])->name('delete.store');
+
+        Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
         Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');
         Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
     });
