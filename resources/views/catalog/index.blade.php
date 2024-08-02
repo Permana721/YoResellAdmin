@@ -41,8 +41,21 @@
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'store_code', name: 'store_code' },
-                { data: 'whatsapp', name: 'whatsapp' },
-                { data: 'url_catalog', name: 'url_catalog' },
+                {
+                    data: 'whatsapp',
+                    name: 'whatsapp',
+                    render: function(data, type, row) {
+                        let phoneNumber = data.replace(/\D/g, '');
+                        return '<a href="https://wa.me/' + phoneNumber + '" target="_blank">' + data + '</a>';
+                    }
+                },
+                {
+                    data: 'url_catalog',
+                    name: 'url_catalog',
+                    render: function(data, type, row) {
+                        return '<a href="' + data + '" target="_blank">' + data + '</a>';
+                    }
+                },
                 { 
                     data: 'created_at', 
                     name: 'created_at',
