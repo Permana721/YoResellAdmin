@@ -8,7 +8,7 @@
         <h4 class="card-title">Update Store</h4>
     </div>
     <div class="card-body">
-        <form method="post" action="{{ route('update.data.store') }}" id="frmSearch" class="invoice-repeater">
+        <form method="post" action="{{ route('update.data.store', $data->id) }}" id="frmSearch" class="invoice-repeater">
         @method('PUT')
         @csrf
             <div class="row">
