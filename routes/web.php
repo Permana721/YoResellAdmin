@@ -9,6 +9,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\CatalogController;
 
 
 /*
@@ -86,7 +87,14 @@ Route::middleware(['login'])->group(function () {
     });
 
     Route::get('/transaction-store', [StoreController::class, 'transaction'])->name('transaction-store');
-    Route::get('/catalog', [StoreController::class, 'index'])->name('catalog');
+
+    Route::get('/catalog', [CatalogController::class, 'catalog'])->name('catalog');
+    Route::get('/catalog/get-catalog', [CatalogController::class, 'getCatalog'])->name('catalog.getCatalog');
+    Route::get('/catalog/create', [CatalogController::class, 'create'])->name('create.catalog');
+    Route::post('/catalog/create/add-data-catalog', [CatalogController::class, 'addDataCatalog'])->name('add.data.catalog');
+    Route::get('/catalog/{id}/edit', [CatalogController::class, 'edit'])->name('edit.catalog');
+    Route::put('/catalog/{id}/update', [CatalogController::class, 'update'])->name('update.data.catalog');
+    Route::delete('/catalog/{id}/destroy', [CatalogController::class, 'destroy'])->name('delete.catalog');
 
     Route::get('/member', [MemberController::class, 'index'])->name('member');
     Route::get('getMember', [MemberController::class, 'getMember'])->name('member.getMember');
