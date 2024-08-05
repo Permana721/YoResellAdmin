@@ -10,7 +10,7 @@ class CheckAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role !== 'Administrator') {
+        if (Auth::check() && !in_array(Auth::user()->role_id, [1, 2])) {
             return back();
         }
 
