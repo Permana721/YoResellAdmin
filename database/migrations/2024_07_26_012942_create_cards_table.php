@@ -19,6 +19,9 @@ class CreateCardsTable extends Migration
             $table->string('number', 16)->unique();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+
+            $table->foreign('member_id')->references('members')->on('id')->onDelete('cascade');
+            $table->foreign('number')->references('sales_headers')->on('number')->onDelete('cascade');
         });        
     }
 
