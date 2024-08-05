@@ -5,7 +5,7 @@
         <h4>Halo</h4>
     </div>
     <div class="card-body">
-        Selamat datang, <b>{{Auth::user()->username}}</b>.
+        Selamat datang, <b>{{ Auth::user()->full_name }}</b>.
     </div>
 </div>
   <section>

@@ -25,7 +25,7 @@ $user = Auth::user();
                 </a>
             </li>
             
-            @if($user->role == 'Administrator')
+            @if(in_array($user->role_id, [1, 2]))
                 <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">CONFIG</h5>
                 <li class="nav-item navMain {{ \Request::segment(1) == 'menu' ? 'active':'' }}">
                     <a class="d-flex align-items-center" href="{{ route('menu') }}">
@@ -94,14 +94,14 @@ $user = Auth::user();
                     <span class="menu-title text-truncate" data-i18n="Home">Member Detail</span>
                 </a>
             </li>
-        @if($user->role == 'Administrator')
+        @if(in_array($user->role_id, [1, 2]))
             <li class="nav-item navMain {{ \Request::segment(1) == 'report-registrasi' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('report-registrasi') }}">
                     <i class="material-icons">assessment</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Registrasi</span>
                 </a>
             </li>
-        @endif
+        @endif        
             <li class="nav-item navMain {{ \Request::segment(1) == 'sales-detail' ? 'active':'' }}">
                 <a class="d-flex align-items-center" href="{{ route('sales-detail') }}">
                     <i class="material-icons">laptop_chromebook</i>
