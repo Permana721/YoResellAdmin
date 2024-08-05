@@ -24,6 +24,8 @@ class CreateCatalogsTable extends Migration
             $table->string('url_catalog', 200);
             $table->string('store_code', 3);
             $table->index('id');
+
+            $table->foreign('store_code')->references('stores')->on('store_code')->onDelete('cascade');
         });        
     }
 
