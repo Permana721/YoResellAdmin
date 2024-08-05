@@ -60,6 +60,8 @@ class CreateMembersTable extends Migration
             $table->string('type_customer', 100)->nullable();
             $table->string('brand', 200)->nullable();
             $table->index('store_code');
+
+            $table->foreign('store_code')->references('stores')->on('store_code')->onDelete('cascade');
         });        
     }
 
