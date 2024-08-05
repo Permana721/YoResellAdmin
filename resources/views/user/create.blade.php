@@ -37,12 +37,12 @@
                 </div>
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
-                        <label for="role"><strong>Role:</strong></label>
-                        <select name="role" id="role" class="form-control select-data" placeholder="Select Role" required>
+                        <label for="role_id"><strong>Role:</strong></label>
+                        <select name="role_id" id="role_id" class="form-control select-data" placeholder="Select Role" required>
                             <option value="" hidden>Pilih Role</option>
-                            <option value="Administrator">Administrator</option>
-                            <option value="CSO">CSO</option>
-                            <option value="User">User</option>
+                            <option value="1">Administrator</option>
+                            <option value="2">User</option>
+                            <option value="3">CSO</option>
                         </select>
                     </div>
                 </div>                

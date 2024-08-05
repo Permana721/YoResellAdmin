@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Role')
+@section('title', 'Member Detail')
 
 @section('content')
 
@@ -14,9 +14,11 @@
                 <table id="detailedTable" class="datatables-basic table">
                 <thead>
                     <tr>
+                    <th>Store</th>
                     <th>Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>Member</th>
+                    <th>Omset QTY</th>
+                    <th>Omset Rupiah</th>
                     <th id="statusColumn">Status</th>
                     </tr>
                 </thead>
@@ -39,24 +41,13 @@
         $('#detailedTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('role.getRole') }}",
+            ajax: "{{ route('transaction.gettransaction') }}",
             columns: [
+                { data: 'store_code', name: 'store_code' },
                 { data: 'name', name: 'name' },
-                { 
-                    data: 'created_at', 
-                    name: 'created_at',
-                    render: function(data, type, row) {
-                        return moment(data).format('DD MMMM YYYY HH:mm');
-                    }
-                },
-                { 
-                    data: 'updated_at', 
-                    name: 'updated_at',
-                    render: function(data, type, row) {
-                        return moment(data).format('DD MMMM YYYY HH:mm');
-                    }
-                },
-                { data: 'action', name: 'action', orderable: false, searchable: false },
+                { data: 'member', name: 'member' },
+                { data: 'omset_QTY', name: 'omset_QTY' },
+                { data: 'omset_rupiah', name: 'omset_rupiah' },
             ],
             dom: dtdom,
             lengthMenu: [
@@ -66,7 +57,7 @@
             buttons: [
                 {
                     text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
-                    className: 'create-new btn btn-primary',
+                    className: 'create-new btn btn-primary d-none',
                     attr: {
                         'data-toggle': 'modal',
                         'data-target': '#modalAddrole'
@@ -86,7 +77,7 @@
             scrollX: true
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Role list</h6>');
+        $('div.head-label').html('<h6 class="mb-0">Transaction Member Detail</h6>');
     });
 
     $.ajaxSetup({

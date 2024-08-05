@@ -78,7 +78,7 @@ class UserController extends Controller
     public function getUsers(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::select(['id', 'username', 'full_name', 'phone', 'email', 'role', 'created_at', 'updated_at'])
+            $data = User::select(['id', 'username', 'full_name', 'phone', 'email', 'role_id', 'created_at', 'updated_at'])
                         ->get()
                         ->map(function($user) {
                             $user->status = 'Active';
@@ -147,7 +147,7 @@ class UserController extends Controller
         $data->username = $request->username;
         $data->email = $request->email;
         $data->password = bcrypt($request->password);
-        $data->role = $request->role;
+        $data->role_id = $request->role_id;
         $data->phone = $request->phone;
         $data->save();
 

@@ -32,11 +32,11 @@
                 </div>
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
-                        <label for="role"><strong>Role:</strong></label>
-                        <select name="role" id="role" class="form-control select-data" placeholder="Select Role" required>
-                            <option value="Administrator" {{ $data->role == 'Administrator' ? 'selected' : '' }}>Administrator</option>
-                            <option value="CSO" {{ $data->role == 'CSO' ? 'selected' : '' }}>CSO</option>
-                            <option value="User" {{ $data->role == 'User' ? 'selected' : '' }}>User</option>
+                        <label for="role_id"><strong>Role:</strong></label>
+                        <select name="role_id" id="role_id" class="form-control select-data" placeholder="Select Role" required>
+                            <option value="1" {{ $data->role_id == 1 ? 'selected' : '' }}>Administrator</option>
+                            <option value="2" {{ $data->role_id == 2 ? 'selected' : '' }}>User</option>
+                            <option value="3" {{ $data->role_id == 3 ? 'selected' : '' }}>CSO</option>
                         </select>
                     </div>
                 </div>                

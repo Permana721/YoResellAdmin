@@ -10,6 +10,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\TransactionController;
 
 
 /*
@@ -102,8 +103,8 @@ Route::middleware(['login'])->group(function () {
     Route::get('/member/{id}/edit', [MemberController::class, 'edit'])->name('edit.member');
     Route::put('/member/{id}/update', [MemberController::class, 'update'])->name('update.data.member');
 
-    Route::get('/transaction-member', [MemberController::class, 'detail'])->name('transaction-member');
-    Route::get('/transaction-member-summary', [MemberController::class, 'summary'])->name('transaction-member-summary');
+    Route::get('/transaction', [TransactionController::class, 'transaction'])->name('transaction');
+    Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransaction'])->name('transaction.getTransaction');
 
     Route::get('/sales-detail', [SalesController::class, 'detail'])->name('sales-detail');
     Route::get('/sales-monthly', [SalesController::class, 'monthly'])->name('sales-monthly');

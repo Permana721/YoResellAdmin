@@ -48,7 +48,22 @@
                 { data: 'full_name', name: 'full_name' },
                 { data: 'phone', name: 'phone' },
                 { data: 'email', name: 'email' },
-                { data: 'role', name: 'role' },
+                { 
+                    data: 'role_id', 
+                    name: 'role_id',
+                    render: function(data, type, row) {
+                        switch (data) {
+                            case 1:
+                                return 'Administrator';
+                            case 2:
+                                return 'User';
+                            case 3:
+                                return 'CSO';
+                            default:
+                                return 'Unknown';
+                        }
+                    }
+                },
                 { data: 'status', name: 'status', render: function(data, type, row) {
                     return '<span style="color: green;">' + data + '</span>';
                 }},
