@@ -29,6 +29,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+
+            $table->foreign('store_code')->references('store_code')->on('stores')->onDelete('cascade');
+            $table->foreign('role_id')->references('roles')->on('id')->onDelete('cascade');
         });        
     }
 
