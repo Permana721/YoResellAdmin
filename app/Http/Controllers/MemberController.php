@@ -41,33 +41,33 @@ class MemberController extends Controller
     public function getMember(Request $request)
     {
         if ($request->ajax()) {
-            $data = Member::select(['id', 'username', 'full_name', 'phone_1', 'nric', 'approve_cso', 'approve_admin', 'created_at', 'updated_at'])
-            ->get()
-            ->map(function($member) {
-                $member->hashed_id = base64_encode($member->id);
-                return $member;
-            });
+            $data = Member::with('card')
+                ->select(['id', 'username', 'full_name', 'phone_1', 'otp', 'approve_cso', 'approve_admin', 'created_at', 'updated_at'])
+                ->get()
+                ->map(function($member) {
+                    $member->phone_otp = $member->phone_1 . ' (' . $member->otp . ')';
+                    $member->hashed_id = base64_encode($member->id);
+                    return $member;
+                });
 
             return DataTables::of($data)
+                ->addColumn('ymc', function($row) {
+                    return optional($row->card)->number ?: 'No Data';
+                })
                 ->addColumn('action', function($row){
                     $editUrl = route('edit.member', $row->hashed_id);
 
-                    $btn = '<div class="dropdown">
-                            <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">menu</i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
-                            </div>
-                        </div>';
-                    return $btn;
+                    return '<div class="dropdown">
+                                <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">menu</i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
+                                </div>
+                            </div>';
                 })
                 ->editColumn('approve_admin', function($row){
-                    if ($row->approve_admin == 1) {
-                        return '<span style="color: green;">Active</span>';
-                    } else {
-                        return '<span style="color: red;">Not Active</span>';
-                    }
+                    return $row->approve_admin == 1 ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Not Active</span>';
                 })
                 ->rawColumns(['action', 'approve_admin'])
                 ->make(true);
@@ -79,9 +79,9 @@ class MemberController extends Controller
     public function edit($hashedId)
     {
         $id = base64_decode($hashedId);
-        $data = Member::findOrFail($id);
+        $data = Member::with('card')->findOrFail($id);
 
-        return view('member.edit',[
+        return view('member.edit', [
             'data'  => $data,
             'title' => 'Member list',
         ]);
@@ -93,18 +93,11 @@ class MemberController extends Controller
 
         $request->validate([
             'phone_1' => 'required',
-            'username' => 'required',
             'full_name' => 'required',
             'email' => 'required|email',
             'nric' => 'required',
             'keterangan' => 'required',
             'address' => 'required',
-            'tokopedia' => 'required',
-            'shopee' => 'required',
-            'bukalapak' => 'required',
-            'lain_lain' => 'required',
-            'type_customer' => 'required',
-            'brand' => 'required',
         ]);
 
         $data->phone_1 = $request->phone_1;
