@@ -40,7 +40,7 @@ $user = Auth::user();
                     </a>
                 </li>
                 <li class="nav-item navMain {{ \Request::segment(1) == 'role-menu' ? 'active':'' }}">
-                    <a class="d-flex align-items-center" href="{{ route('role-menu') }}">
+                    <a class="d-flex align-items-center" href="{{ route('role.menu') }}">
                         <i class="material-icons">menu</i>
                         <span class="menu-title text-truncate" data-i18n="Home">Role Menu</span>
                     </a>
@@ -88,8 +88,8 @@ $user = Auth::user();
             </li>
 
             <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">REPORT</h5>
-            <li class="nav-item navMain {{ \Request::segment(1) == 'transaction-member' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('transaction-member') }}">
+            <li class="nav-item navMain {{ \Request::segment(1) == 'transaction' ? 'active':'' }}">
+                <a class="d-flex align-items-center" href="{{ route('transaction') }}">
                     <i class="material-icons">people</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Member Detail</span>
                 </a>
@@ -115,7 +115,7 @@ $user = Auth::user();
                 </a>
             </li>
             <li class="nav-item navMain {{ \Request::segment(1) == 'transaction-member-summary' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('transaction-member-summary') }}">
+                <a class="d-flex align-items-center" href="">
                     <i class="material-icons">person_outline</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Transaction Member</span>
                 </a>
