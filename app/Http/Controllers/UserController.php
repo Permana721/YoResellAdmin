@@ -98,11 +98,6 @@ class UserController extends Controller
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
-                                <form action="'.$deleteUrl.'" method="POST">
-                                    <input type="hidden" name="_token" value="'.csrf_token().'">
-                                    '.method_field('DELETE').'
-                                    <button type="submit" class="dropdown-item w-100" onclick="return confirm(\'Are you sure?\')">Delete</button>
-                                </form>
                             </div>
                         </div>';
                     return $btn;
@@ -158,18 +153,10 @@ class UserController extends Controller
     {
         $data = User::findOrFail($id);
 
-        $request->validate([
-            'full_name' => 'required',
-            'username' => 'required',
-            'email' => 'required|email',
-            'role' => 'required',
-            'phone' => 'required',
-        ]);
-
         $data->full_name = $request->full_name;
         $data->username = $request->username;
         $data->email = $request->email;
-        $data->role = $request->role;
+        $data->role_id = $request->role_id;
         $data->phone = $request->phone;
         $data->save();
 
