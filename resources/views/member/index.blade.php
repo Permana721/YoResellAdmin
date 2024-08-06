@@ -34,73 +34,69 @@
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
-    let dtdom = '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
+        let dtdom = '<"card-header border-bottom mr-5"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
 
-    $('#detailedTable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('member.getMember') }}",
-        columns: [
-            { data: 'username', name: 'username' },
-            { data: 'full_name', name: 'full_name' },
-            { data: 'phone_1', name: 'phone_1' },
-            { data: 'nric', name: 'nric' },
-            { data: 'approve_cso', name: 'approve_cso' },
-            { data: 'approve_admin', name: 'approve_admin' },
-            { 
-                data: 'created_at', 
-                name: 'created_at',
-                render: function(data, type, row) {
-                    return moment(data).format('DD MMMM YYYY HH:mm');
-                }
-            },
-            { 
-                data: 'updated_at', 
-                name: 'updated_at',
-                render: function(data, type, row) {
-                    return moment(data).format('DD MMMM YYYY HH:mm');
-                }
-            },
-            { data: 'action', name: 'action', orderable: false, searchable: false },
-        ],
-        dom: dtdom,
-        lengthMenu: [
-            [10, 25, 50, 75, 100],
-            ['10', '25', '50', '75', '100']
-        ],
-        buttons: [
-            {
-                text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
-                className: 'create-new btn btn-primary d-none',
-                attr: {
-                    'data-toggle': 'modal',
-                    'data-target': '#modalAddrole'
+        $('#detailedTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('member.getMember') }}",
+            columns: [
+                { data: 'username', name: 'username' },
+                { data: 'full_name', name: 'full_name' },
+                { data: 'phone_otp', name: 'phone_otp' }, // Menggunakan phone_otp sebagai data
+                { data: 'ymc', name: 'ymc' },
+                { data: 'approve_cso', name: 'approve_cso' },
+                { data: 'approve_admin', name: 'approve_admin' },
+                { 
+                    data: 'created_at', 
+                    name: 'created_at',
+                    render: function(data) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
                 },
-                action: function(e, dt, button, config) {
-                    window.location = "{{ route('create.member') }}";
+                { 
+                    data: 'updated_at', 
+                    name: 'updated_at',
+                    render: function(data) {
+                        return moment(data).format('DD MMMM YYYY HH:mm');
+                    }
+                },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            dom: dtdom,
+            lengthMenu: [
+                [10, 25, 50, 75, 100],
+                ['10', '25', '50', '75', '100']
+            ],
+            buttons: [
+                {
+                    text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
+                    className: 'create-new btn btn-primary d-none',
+                    attr: {
+                        'data-toggle': 'modal',
+                        'data-target': '#modalAddrole'
+                    },
+                    action: function(e, dt, button, config) {
+                        window.location = "{{ route('create.member') }}";
+                    }
                 }
-            }
-        ],
-        language: {
-            paginate: {
-                previous: '&nbsp;',
-                next: '&nbsp;'
+            ],
+            language: {
+                paginate: {
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                },
+                info: "Showing _START_ to _END_ of _TOTAL_ entries"
             },
-            info: "Showing _START_ to _END_ of _TOTAL_ entries"
-        },
-        scrollX: true,
-        // responsive: true, 
-        createdRow: function(row, data, dataIndex) {
-            if (data.approve_cso == 1) {
-                $('td:eq(4)', row).html('<span style="color: green;">Approve</span>');
-            } else {
-                $('td:eq(4)', row).html('<span style="color: red;">Not Approve</span>');
+            scrollX: true,
+            // responsive: true, 
+            createdRow: function(row, data) {
+                $('td:eq(4)', row).html(data.approve_cso == 1 ? '<span style="color: green;">Approve</span>' : '<span style="color: red;">Not Approve</span>');
             }
-        }
-    });
+        });
 
-    $('div.head-label').html('<h6 class="mb-0">Member list</h6>');
-});
+        $('div.head-label').html('<h6 class="mb-0">Member list</h6>');
+    });
 
 $.ajaxSetup({
     headers: {
