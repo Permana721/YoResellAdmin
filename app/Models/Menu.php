@@ -20,4 +20,9 @@ class Menu extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function roleMenus()
+    {
+        return $this->hasMany(RoleMenu::class); // A menu can have many roleMenus
+    }
 }

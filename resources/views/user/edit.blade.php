@@ -15,7 +15,7 @@
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
                         <label for="username"><strong>Username:</strong></label>
-                        <input type="text" name="username" id="username" placeholder="Username" class="form-control" value="{{ $data->username }}" autocomplete="off" required />
+                        <input type="text" name="username" id="username" placeholder="Username" class="form-control" value="{{ $data->username }}" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-xl-6 col-md-6 col-12">
@@ -27,13 +27,13 @@
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
                         <label for="email"><strong>Email:</strong></label>
-                        <input type="email" name="email" id="email" placeholder="Email" class="form-control" value="{{ $data->email }}" autocomplete="off" required />
+                        <input type="email" name="email" id="email" placeholder="Email" class="form-control" value="{{ $data->email }}" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
                         <label for="role_id"><strong>Role:</strong></label>
-                        <select name="role_id" id="role_id" class="form-control select-data" placeholder="Select Role" required>
+                        <select name="role_id" id="role_id" class="form-control select-data" placeholder="Select Role">
                             <option value="1" {{ $data->role_id == 1 ? 'selected' : '' }}>Administrator</option>
                             <option value="2" {{ $data->role_id == 2 ? 'selected' : '' }}>User</option>
                             <option value="3" {{ $data->role_id == 3 ? 'selected' : '' }}>CSO</option>
@@ -43,7 +43,7 @@
                 <div class="col-xl-6 col-md-6 col-12">
                     <div class="form-group">
                         <label for="phone"><strong>Phone:</strong></label>
-                        <input type="phone" name="phone" id="phone" placeholder="Phone" class="form-control" value="{{ $data->phone }}" autocomplete="off" required />
+                        <input type="number" name="phone" id="phone" placeholder="Phone" class="form-control" value="{{ $data->phone }}" autocomplete="off" />
                     </div>
                 </div>
             </div>

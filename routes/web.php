@@ -10,6 +10,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\TransactionController;
 
 
@@ -65,7 +66,10 @@ Route::middleware(['login'])->group(function () {
         Route::put('/role/{id}/update', [RoleController::class, 'update'])->name('update.data.role');
         Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('delete.role');
 
-        Route::get('/role-menu', [MenuController::class, 'roleMenu'])->name('role-menu');
+        Route::get('/role-menu', [RoleMenuController::class, 'roleMenu'])->name('role.menu');
+        Route::get('/role-menu/get-menu', [RoleMenuController::class, 'getRoleMenu'])->name('get.role.menu');
+        Route::get('/role-menu/{id}/edit', [RoleMenuController::class, 'edit'])->name('edit.role.menu');
+        Route::put('/role-menu/{id}/update', [RoleMenuController::class, 'update'])->name('update.role.menu');
         
         Route::get('/user', [UserController::class, 'index'])->name('user');
         Route::get('/user/create', [UserController::class, 'create'])->name('create.user');

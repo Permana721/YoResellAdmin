@@ -56,4 +56,9 @@ class Member extends Model
         'type_costumer',
         'brand',
     ];
+
+    public function card()
+    {
+        return $this->hasOne(Card::class, 'member_id');
+    }
 }
