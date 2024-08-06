@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use App\Models\User;
-use App\Models\Member;
 use Illuminate\Http\Request;
-use App\Http\Requests\MemberRequest;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
