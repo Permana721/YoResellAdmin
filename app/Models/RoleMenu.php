@@ -21,15 +21,14 @@ class RoleMenu extends Model
         'updated_at',
     ];
 
-    // RoleMenu.php (model)
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id'); // Assuming 'role_id' is the foreign key
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function menu()
     {
-        return $this->belongsTo(Menu::class, 'menu_id'); // Assuming 'menu_id' is the foreign key
+        return $this->belongsTo(Menu::class, 'menu_id');
     }
 
 }
