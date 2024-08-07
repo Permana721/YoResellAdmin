@@ -45,7 +45,6 @@ $user = Auth::user();
                         <span class="menu-title text-truncate" data-i18n="Home">Role Menu</span>
                     </a>
                 </li>
-
                 <h5 class="ml-2 mt-2 breadcrumbs-title hide-on-small-and-down">MASTER</h5>
                 <li class="nav-item navMain {{ \Request::segment(1) == 'region' ? 'active':'' }}">
                     <a class="d-flex align-items-center" href="{{ route('region') }}">
@@ -54,7 +53,7 @@ $user = Auth::user();
                     </a>
                 </li>
                 <li class="nav-item navMain {{ \Request::segment(1) == 'region-store' ? 'active':'' }}">
-                    <a class="d-flex align-items-center" href="{{ route('region-store') }}">
+                    <a class="d-flex align-items-center" href="{{ route('region.store') }}">
                         <i class="material-icons">menu</i>
                         <span class="menu-title text-truncate" data-i18n="Home">Regional/Store</span>
                     </a>
