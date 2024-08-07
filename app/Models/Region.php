@@ -17,4 +17,9 @@ class Region extends Model
         'created_at',
         'updated_at',
     ];
+    
+    public function regionStores()
+    {
+        return $this->hasMany(RegionStore::class, 'region_id');
+    }
 }
