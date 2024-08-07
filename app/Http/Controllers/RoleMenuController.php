@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
+use App\Models\Role;
 use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -75,12 +77,19 @@ class RoleMenuController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Member::with('card')->findOrFail($id);
+        $roleId = base64_decode($hashedId);
 
-        return view('member.edit', [
-            'data'  => $data,
-            'title' => 'Member list',
+        $roleMenus = RoleMenu::with('menu')
+            ->where('role_id', $roleId)
+            ->get();
+
+        $role = Role::findOrFail($roleId);
+
+        return view('role-menu.edit', [
+            'roleMenus' => $roleMenus,
+            'role' => $role,
+            'availableMenus' => Menu::all(), 
+            'title' => 'Edit Role Menu',
         ]);
     }
 
