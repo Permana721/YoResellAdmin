@@ -8,37 +8,31 @@
         <h4 class="card-title">Edit RoleMenu</h4>
     </div>
     <div class="card-body">
-        <form method="post" action="{{ route('update.role.menu', $data->id) }}" id="frmSearch" class="invoice-repeater">
-            @method('PUT')
+        <form action="" method="post">
             @csrf
+            @method('PUT')
             <div class="form-group">
-                <label for="role_id">Role</label>
-                <select id="role_id" name="role_id" class="form-control" required>
-                    <option value="">Select Role</option>
-                    @foreach($roles as $role)
-                        <option value="{{ $role->id }}" {{ $roleMenu->role_id == $role->id ? 'selected' : '' }}>
-                            {{ $role->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <label for="roleName">Role Name</label>
+                <input type="text" class="form-control" id="roleName" name="role_name" value="{{ $role->name }}" disabled>
             </div>
-    
+        
             <div class="form-group">
-                <label for="menu_id">Menu</label>
-                <select id="menu_id" name="menu_id" class="form-control" required>
-                    <option value="">Select Menu</option>
-                    @foreach($menus as $menu)
-                        <option value="{{ $menu->id }}" {{ $roleMenu->menu_id == $menu->id ? 'selected' : '' }}>
-                            {{ $menu->name }}
-                        </option>
+                <label for="menuList">Menu</label>
+                <div id="menuList">
+                    @foreach($availableMenus as $menu)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="menus[]" id="menu{{ $menu->id }}" value="{{ $menu->id }}"
+                            @if($roleMenus->contains('menu_id', $menu->id)) checked @endif>
+                            <label class="form-check-label" for="menu{{ $menu->id }}">
+                                {{ $menu->name }}
+                            </label>
+                        </div>
                     @endforeach
-                </select>
+                </div>
             </div>
-            <div>
-                <a href="{{ route('region') }}" class="btn btn-info" id="backButton">Back</a>
-                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-            </div>
-        </form>        
+        
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>               
     </div>
 </div>
 @endsection

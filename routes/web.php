@@ -11,6 +11,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\RoleMenuController;
+use App\Http\Controllers\RegionStoreController;
 use App\Http\Controllers\TransactionController;
 
 
@@ -58,6 +59,10 @@ Route::middleware(['login'])->group(function () {
         Route::put('/region/{id}/update', [RegionController::class, 'update'])->name('update.data.region');
         Route::delete('/region/{id}/destroy', [RegionController::class, 'destroy'])->name('delete.region');
 
+        Route::get('/region-store', [RegionStoreController::class, 'regionStore'])->name('region.store');
+        Route::get('/region-store/get-region', [RegionStoreController::class, 'getRegionStore'])->name('region.getRegion.store');
+        Route::get('/region-store/edit', [RegionStoreController::class, 'edit'])->name('edit.region.store');
+
         Route::get('/role', [RoleController::class, 'role'])->name('role');
         Route::get('/role/get-role', [RoleController::class, 'getRole'])->name('role.getRole');
         Route::get('/role/create', [RoleController::class, 'create'])->name('create.role');
@@ -68,8 +73,8 @@ Route::middleware(['login'])->group(function () {
 
         Route::get('/role-menu', [RoleMenuController::class, 'roleMenu'])->name('role.menu');
         Route::get('/role-menu/get-menu', [RoleMenuController::class, 'getRoleMenu'])->name('get.role.menu');
-        Route::get('/role-menu/{id}/edit', [RoleMenuController::class, 'edit'])->name('edit.role.menu');
-        Route::put('/role-menu/{id}/update', [RoleMenuController::class, 'update'])->name('update.role.menu');
+        Route::get('/role-menu/{hashedId}/edit', [RoleMenuController::class, 'edit'])->name('edit.role.menu');
+        Route::put('/role-menu/{hashedId}/update', [RoleMenuController::class, 'update'])->name('update.role.menu');
         
         Route::get('/user', [UserController::class, 'index'])->name('user');
         Route::get('/user/create', [UserController::class, 'create'])->name('create.user');
@@ -87,7 +92,6 @@ Route::middleware(['login'])->group(function () {
         Route::delete('/store/{id}/destroy', [StoreController::class, 'destroy'])->name('delete.store');
 
         Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
-        Route::get('/region-store', [StoreController::class, 'regionStore'])->name('region-store');
         Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
     });
 
