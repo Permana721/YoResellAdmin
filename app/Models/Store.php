@@ -38,4 +38,9 @@ class Store extends Model
         'type_store',
         'sm',
     ];
+
+    public function regionStores()
+    {
+        return $this->hasMany(RegionStore::class);
+    }
 }
