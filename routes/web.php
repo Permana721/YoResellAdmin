@@ -12,7 +12,9 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\RegionStoreController;
+use App\Http\Controllers\SalesDetailController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\SalesMonthlyController;
 
 
 /*
@@ -61,7 +63,7 @@ Route::middleware(['login'])->group(function () {
 
         Route::get('/region-store', [RegionStoreController::class, 'regionStore'])->name('region.store');
         Route::get('/region-store/get-region', [RegionStoreController::class, 'getRegionStore'])->name('region.getRegion.store');
-        Route::get('/region-store/edit', [RegionStoreController::class, 'edit'])->name('edit.region.store');
+        Route::get('/region-store/{hashedId}/edit', [RegionStoreController::class, 'edit'])->name('edit.region.store');
 
         Route::get('/role', [RoleController::class, 'role'])->name('role');
         Route::get('/role/get-role', [RoleController::class, 'getRole'])->name('role.getRole');
@@ -106,7 +108,7 @@ Route::middleware(['login'])->group(function () {
     Route::delete('/catalog/{id}/destroy', [CatalogController::class, 'destroy'])->name('delete.catalog');
 
     Route::get('/member', [MemberController::class, 'index'])->name('member');
-    Route::get('getMember', [MemberController::class, 'getMember'])->name('member.getMember');
+    Route::get('/member/getMember', [MemberController::class, 'getMember'])->name('member.getMember');
     Route::get('/member/create', [MemberController::class, 'create'])->name('create.member');
     Route::get('/member/{id}/edit', [MemberController::class, 'edit'])->name('edit.member');
     Route::put('/member/{id}/update', [MemberController::class, 'update'])->name('update.data.member');
@@ -114,6 +116,9 @@ Route::middleware(['login'])->group(function () {
     Route::get('/transaction', [TransactionController::class, 'transaction'])->name('transaction');
     Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransaction'])->name('transaction.getTransaction');
 
-    Route::get('/sales-detail', [SalesController::class, 'detail'])->name('sales-detail');
-    Route::get('/sales-monthly', [SalesController::class, 'monthly'])->name('sales-monthly');
+    Route::get('/sales-detail', [SalesDetailController::class, 'salesDetail'])->name('sales.detail');
+    Route::get('/sales-detail/get-sales-detail', [SalesDetailController::class, 'getSalesDetail'])->name('sales.getSalesDetail');
+
+    Route::get('/sales-monthly', [SalesMonthlyController::class, 'salesMonthly'])->name('sales.monthly');
+    Route::get('/sales-monthly/get-sales-monthly', [SalesMonthlyController::class, 'getSalesMonthly'])->name('sales.getSalesMonthly');
 });
