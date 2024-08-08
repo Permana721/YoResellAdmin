@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Store;
+use App\Models\Region;
 use App\Models\RegionStore;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -29,54 +31,51 @@ class RegionStoreController extends Controller
     }
 
     public function getRegionStore(Request $request)
-{
-    if ($request->ajax()) {
-        $data = RegionStore::with(['region', 'store'])
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->region->name; // Mengelompokkan berdasarkan nama region
-            })
-            ->map(function($items) {
-                $firstItem = $items->first(); 
-
-                $regionName = $items->pluck('region.name')->unique()->implode(', ');
-                $regionId = $firstItem->region_id;
-
-                // Mendapatkan initial_store yang unik
-                $initialStores = $items->pluck('store.initial_store')->filter()->unique()->implode(', ');
-
-                // Mendapatkan tanggal paling awal dan paling akhir dari created_at dan updated_at
-                $createdAt = $items->min('created_at')->toIso8601String();
-                $updatedAt = $items->max('updated_at')->toIso8601String();
-
+    {
+        if ($request->ajax()) {
+            $data = Region::with('regionStores.store')->get()->map(function($region) {
                 return [
-                    'region_id' => $regionId,
-                    'region' => $regionName,
-                    'initial_stores' => $initialStores,
-                    'created_at' => $createdAt,
-                    'updated_at' => $updatedAt,
-                    'hashed_id' => base64_encode($regionId)
+                    'region_id' => $region->id,
+                    'region_name' => $region->name,
+                    'initial_stores' => $region->regionStores->pluck('store.initial_store')->filter()->unique()->implode(', '),
+                    'created_at' => $region->created_at->toIso8601String(),
+                    'updated_at' => $region->updated_at->toIso8601String(),
+                    'hashed_id' => base64_encode($region->id)
                 ];
             });
 
-        return DataTables::of($data)
-            ->addColumn('action', function($row) {
-                $editUrl = route('edit.region.store', $row['hashed_id']);
+            return DataTables::of($data)
+                ->addColumn('action', function($row) {
+                    $editUrl = route('edit.region.store', $row['hashed_id']);
 
-                return '<div class="dropdown">
-                            <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">menu</i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
-                            </div>
-                        </div>';
-            })
-            ->make(true);
+                    return '<div class="dropdown">
+                                <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">menu</i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
+                                </div>
+                            </div>';
+                })
+                ->make(true);
+        }
+
+        return view('region-store.index');
     }
 
-    return view('region-store.index');
-}
+    public function edit($hashedId)
+    {
+        $regionId = base64_decode($hashedId);
+        $region = Region::findOrFail($regionId);
+        $stores = Store::all();
+        $selectedStores = RegionStore::where('region_id', $regionId)->pluck('store_code')->toArray();
 
+        return view('region-store.edit', [
+            'title' => 'Region Store Edit',
+            'region' => $region,
+            'stores' => $stores,
+            'selectedStores' => $selectedStores
+        ]);
+    }
 
 }
