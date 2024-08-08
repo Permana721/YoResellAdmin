@@ -37,7 +37,7 @@
             serverSide: true,
             ajax: "{{ route('region.getRegion.store') }}",
             columns: [
-                { data: 'region', name: 'region' },
+                { data: 'region_name', name: 'region_name' },
                 { data: 'initial_stores', name: 'initial_stores' },
                 { 
                     data: 'created_at', 
