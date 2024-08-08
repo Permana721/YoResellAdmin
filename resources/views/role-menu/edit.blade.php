@@ -31,6 +31,7 @@
                 </div>
             </div>
         
+            <a href="{{route('role.menu')}}" class="btn btn-info">Back</a>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>               
     </div>
