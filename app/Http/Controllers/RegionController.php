@@ -91,7 +91,7 @@ class RegionController extends Controller
 
         return view('region.edit',[
             'data'  => $data,
-            'title' => 'Region List',
+            'title' => 'Region Edit',
         ]);
     }
 
