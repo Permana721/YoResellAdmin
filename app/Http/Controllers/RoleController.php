@@ -92,7 +92,7 @@ class RoleController extends Controller
 
         return view('roles.edit',[
             'data'  => $data,
-            'title' => 'Roles list',
+            'title' => 'Role Edit',
         ]);
     }
 
