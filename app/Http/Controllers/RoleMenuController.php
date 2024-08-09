@@ -89,7 +89,7 @@ class RoleMenuController extends Controller
             'roleMenus' => $roleMenus,
             'role' => $role,
             'availableMenus' => Menu::all(), 
-            'title' => 'Edit Role Menu',
+            'title' => 'Role Menu Edit',
         ]);
     }
 
