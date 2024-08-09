@@ -43,4 +43,11 @@ class Store extends Model
     {
         return $this->hasMany(RegionStore::class);
     }
+
+    public function salesDetail()
+    {
+        return $this->hasMany(SalesDetail::class, 'store_code', 'store_code');
+    }
+
+
 }

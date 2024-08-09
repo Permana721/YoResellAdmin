@@ -95,20 +95,20 @@ $user = Auth::user();
             </li>
         @if(in_array($user->role_id, [1, 2]))
             <li class="nav-item navMain {{ \Request::segment(1) == 'report-registrasi' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('report-registrasi') }}">
+                <a class="d-flex align-items-center" href="">
                     <i class="material-icons">assessment</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Registrasi</span>
                 </a>
             </li>
         @endif        
             <li class="nav-item navMain {{ \Request::segment(1) == 'sales-detail' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('sales-detail') }}">
+                <a class="d-flex align-items-center" href="{{ route('sales.detail') }}">
                     <i class="material-icons">laptop_chromebook</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Sales Detail</span>
                 </a>
             </li>
             <li class="nav-item navMain {{ \Request::segment(1) == 'sales-monthly' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('sales-monthly') }}">
+                <a class="d-flex align-items-center" href="">
                     <i class="material-icons">assessment</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Sales Monthly</span>
                 </a>
@@ -120,7 +120,7 @@ $user = Auth::user();
                 </a>
             </li>
             <li class="nav-item navMain mb-2 {{ \Request::segment(1) == 'transaction-store' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="{{ route('transaction-store') }}">
+                <a class="d-flex align-items-center" href="">
                     <i class="material-icons">business</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Transaction Store</span>
                 </a>

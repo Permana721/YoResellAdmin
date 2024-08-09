@@ -45,11 +45,10 @@
                 { data: 'name', name: 'name' },
                 { data: 'store_code', name: 'store_code' },
                 { data: 'initial_store', name: 'initial_store' },
-                { data: 'address', name: 'address' },
+                { data: 'name', name: 'name' },
                 { data: 'city', name: 'city' },
                 { data: 'latitude', name: 'latitude' },
                 { data: 'longitude', name: 'longitude' },
-                
                 { 
                     data: 'created_at', 
                     name: 'created_at',
