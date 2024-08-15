@@ -54,11 +54,6 @@
     div.dataTables_wrapper div.dataTables_paginate {
         margin-top: -35px;
     }
-
-    /* .dt-buttons {
-        position: sticky;
-        top: 50px
-    } */
 </style>
 
 @endsection
