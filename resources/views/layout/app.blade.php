@@ -26,7 +26,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/fonts/font-awesome/css/font-awesome.min.css')}}">
-    <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/bootstrap-extended.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/colors.css')}}">
