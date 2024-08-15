@@ -114,7 +114,7 @@ class UserController extends Controller
 
         return view('user.edit',[
             'data'  => $data,
-            'title' => 'User list',
+            'title' => 'Edit User',
         ]);
     }
 

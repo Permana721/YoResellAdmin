@@ -71,7 +71,7 @@ class RegionStoreController extends Controller
         $selectedStores = RegionStore::where('region_id', $regionId)->pluck('store_code')->toArray();
 
         return view('region-store.edit', [
-            'title' => 'Region Store Edit',
+            'title' => 'Edit Region Store',
             'region' => $region,
             'stores' => $stores,
             'selectedStores' => $selectedStores

@@ -83,7 +83,7 @@ class MemberController extends Controller
 
         return view('member.edit', [
             'data'  => $data,
-            'title' => 'Member list',
+            'title' => 'Edit Member by CSO',
         ]);
     }
 

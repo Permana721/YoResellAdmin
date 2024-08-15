@@ -97,7 +97,7 @@ class MenuController extends Controller
 
         return view('menu.edit',[
             'data'  => $data,
-            'title' => 'Menu List',
+            'title' => 'Edit Menu',
         ]);
     }
 
