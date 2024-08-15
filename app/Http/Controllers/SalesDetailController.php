@@ -33,6 +33,10 @@ class SalesDetailController extends Controller
     {
         $query = SalesDetail::with(['store', 'masterArticle', 'salesHeader']);
 
+        if (!empty($request->fromDate) && !empty($request->toDate)) {
+            $query->whereBetween('tanggal', [$request->fromDate, $request->toDate]);
+        }
+
         return DataTables::of($query)
             ->editColumn('StoreName', function ($row) {
                 return $row->store->name;
@@ -48,4 +52,5 @@ class SalesDetailController extends Controller
             })
             ->make(true);
     }
+
 }
