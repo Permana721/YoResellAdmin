@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row">
+        <div class="row mb-5" style="position: relative; top: 5px;"> 
             <div class="col-md-3">
                 <input type="date" id="fromDate" class="form-control" placeholder="From">
             </div>
@@ -50,6 +50,17 @@
         </section>
     </div>
 </div>
+<style>
+    div.dataTables_wrapper div.dataTables_paginate {
+        margin-top: -35px;
+    }
+
+    /* .dt-buttons {
+        position: sticky;
+        top: 50px
+    } */
+</style>
+
 @endsection
 
 @section('scripts')
@@ -78,21 +89,51 @@
         { data: 'sv', name: 'sv' },
         { data: 'Type', name: 'masterArticle.art_type_system' },
         { data: 'description', name: 'description' },
-        { data: 'gross', name: 'gross' },
+        { 
+            data: 'gross', 
+            name: 'gross',
+            render: function(data, type, row) {
+                return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
+            }
+        },
         { data: 'disc', name: 'disc' },
         { data: 'qty', name: 'qty' },
-        { data: 'price', name: 'price' },
+        { 
+            data: 'price', 
+            name: 'price',
+            render: function(data, type, row) {
+                return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
+            }
+        },
         { data: 'pos', name: 'pos' },
         { data: 'trans', name: 'trans' },
         { data: 'Number', name: 'salesHeader.number' }
     ],
-    scrollX: true, // Enable horizontal scroll
+    scrollX: true, 
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'excel', 'csv', 'pdf'
+        {
+            extend: 'copy',
+            text: 'Copy',
+            className: 'btn btn-primary'
+        },
+        {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-primary'
+        },
+        {
+            extend: 'csv',
+            text: 'CSV',
+            className: 'btn btn-primary'
+        },
+        {
+            extend: 'pdf',
+            text: 'PDF',
+            className: 'btn btn-primary'
+        }
     ]
 });
-
 
     $.ajaxSetup({
         headers: {
