@@ -11,5 +11,5 @@
     </div>
     </div>
 </div>
-<!-- / Error page-->
+<!-- /\ Error page-->
 @endsection 
