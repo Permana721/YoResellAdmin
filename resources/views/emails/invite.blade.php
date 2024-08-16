@@ -20,13 +20,7 @@
 					</td>
 				  </tr>
 				</table>
-				{{-- <table style="font-family: 'Montserrat',Arial,sans-serif; width: 100%;" width="100%" cellpadding="0" cellspacing="0" role="presentation">
-				  <tr>
-					<td style="font-family: 'Montserrat',Arial,sans-serif; padding-top: 32px; padding-bottom: 32px;">
-					  <div style="--bg-opacity: 1; background-color: #eceff1; background-color: rgba(236, 239, 241, var(--bg-opacity)); height: 1px; line-height: 1px;">&zwnj;</div>
-					</td>
-				  </tr>
-				</table> --}}
+			
 				<p style="margin: 0 0 16px;">
 					{!! str_replace('[[COPY_LINK]]', url('account/register/'.$userid.'/'.$person->token), getSetting('registrasi_info_3')) !!}
 				</p>
