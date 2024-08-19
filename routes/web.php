@@ -11,10 +11,11 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\RoleMenuController;
+use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RegionStoreController;
 use App\Http\Controllers\SalesDetailController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\SalesMonthlyController;
+use App\Http\Controllers\TransactionMemberController;
 
 
 /*
@@ -94,7 +95,9 @@ Route::middleware(['login'])->group(function () {
         Route::delete('/store/{id}/destroy', [StoreController::class, 'destroy'])->name('delete.store');
 
         Route::get('get-users', [UserController::class, 'getUsers'])->name('users.getUsers');
-        Route::get('/report-registrasi', [StoreController::class, 'reportRegistrasi'])->name('report-registrasi');
+
+        Route::get('/report-registrasi', [RegistrasiController::class, 'reportRegistrasi'])->name('report.registrasi');
+        Route::get('/report-registrasi/get-registrasi', [RegistrasiController::class, 'getRegistrasi'])->name('registrasi.getRegistrasi');
     });
 
     Route::get('/transaction-store', [StoreController::class, 'transaction'])->name('transaction-store');
@@ -113,8 +116,8 @@ Route::middleware(['login'])->group(function () {
     Route::get('/member/{id}/edit', [MemberController::class, 'edit'])->name('edit.member');
     Route::put('/member/{id}/update', [MemberController::class, 'update'])->name('update.data.member');
 
-    Route::get('/transaction', [TransactionController::class, 'transaction'])->name('transaction');
-    Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransaction'])->name('transaction.getTransaction');
+    Route::get('/transaction-member', [TransactionMemberController::class, 'transactionMember'])->name('transaction.member');
+    Route::get('/transaction/get-transaction', [TransactionMemberController::class, 'getTransaction'])->name('transaction.getTransactionMember');
 
     Route::get('/sales-detail', [SalesDetailController::class, 'salesDetail'])->name('sales.detail');
     Route::get('/sales-detail/get-sales-detail', [SalesDetailController::class, 'getSalesDetail'])->name('sales.getSalesDetail');
