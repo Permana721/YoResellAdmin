@@ -49,5 +49,4 @@ class Store extends Model
         return $this->hasMany(SalesDetail::class, 'store_code', 'store_code');
     }
 
-
 }
