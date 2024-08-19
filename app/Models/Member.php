@@ -61,4 +61,10 @@ class Member extends Model
     {
         return $this->hasOne(Card::class, 'member_id');
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_code', 'store_code');
+    }
+
 }
