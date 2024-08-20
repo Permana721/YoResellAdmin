@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row mb-5" style="position: relative; top: 5px;"> 
+        <div class="row mb-2" style="position: relative; top: 5px;"> 
             <div class="col-md-3">
                 <input type="date" id="fromDate" class="form-control" placeholder="From">
             </div>
@@ -40,8 +40,9 @@
 </div>
 <style>
     div.dataTables_wrapper div.dataTables_paginate {
-        margin-top: -35px;
-    }
+    margin-top: 10px;
+}
+
 </style>
 
 @endsection
@@ -69,7 +70,9 @@
                 { data: 'name', name: 'name' },
                 { data: 'jumlah_terdaftar', name: 'jumlah_terdaftar', searchable: false },
             ],
-            dom: 'Bfrtip',
+            dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-md-6"B><"col-md-6"f>>' + 
+                't' +
+                '<"row"<"col-md-6"i><"col-md-6"p>>',
             lengthMenu: [
                 [10, 25, 50, 75, 100],
                 ['10', '25', '50', '75', '100']
@@ -105,13 +108,10 @@
             },
             scrollX: true
         });
-
-        // Reload table when "Show" button is clicked
+        
         $('#filter').on('click', function() {
             table.ajax.reload();
         });
-
-        $('div.head-label').html('<h6 class="mb-0">Registrasi</h6>');
     });
 
     $.ajaxSetup({
