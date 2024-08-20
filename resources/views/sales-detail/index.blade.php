@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row mb-5" style="position: relative; top: 5px;"> 
+        <div class="row mb-2" style="position: relative; top: 5px;"> 
             <div class="col-md-3">
                 <input type="date" id="fromDate" class="form-control" placeholder="From">
             </div>
@@ -50,6 +50,7 @@
         </section>
     </div>
 </div>
+
 <style>
     div.dataTables_wrapper div.dataTables_paginate {
         margin-top: -35px;
@@ -64,71 +65,90 @@
         $('#detailedTable').DataTable().ajax.reload();
     });
 
-    $('#detailedTable').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: {
-        url: "{{ route('sales.getSalesDetail') }}",
-        data: function(d) {
-            d.fromDate = $('#fromDate').val();
-            d.toDate = $('#toDate').val();
-        }
-    },
-    columns: [
-        { data: 'tanggal', name: 'tanggal' },
-        { data: 'store_code', name: 'store_code' },
-        { data: 'StoreName', name: 'store.name' },
-        { data: 'SubCat', name: 'masterArticle.subcat' },
-        { data: 'sku', name: 'sku' },
-        { data: 'plu', name: 'plu' },
-        { data: 'sv', name: 'sv' },
-        { data: 'Type', name: 'masterArticle.art_type_system' },
-        { data: 'description', name: 'description' },
-        { 
-            data: 'gross', 
-            name: 'gross',
-            render: function(data, type, row) {
-                return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
-            }
-        },
-        { data: 'disc', name: 'disc' },
-        { data: 'qty', name: 'qty' },
-        { 
-            data: 'price', 
-            name: 'price',
-            render: function(data, type, row) {
-                return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
-            }
-        },
-        { data: 'pos', name: 'pos' },
-        { data: 'trans', name: 'trans' },
-        { data: 'Number', name: 'salesHeader.number' }
-    ],
-    scrollX: true, 
-    dom: 'Bfrtip',
-    buttons: [
-        {
-            extend: 'copy',
-            text: 'Copy',
-            className: 'btn btn-primary'
-        },
-        {
-            extend: 'excel',
-            text: 'Excel',
-            className: 'btn btn-primary'
-        },
-        {
-            extend: 'csv',
-            text: 'CSV',
-            className: 'btn btn-primary'
-        },
-        {
-            extend: 'pdf',
-            text: 'PDF',
-            className: 'btn btn-primary'
-        }
-    ]
-});
+    $(document).ready(function() {
+        var table = $('#detailedTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('sales.getSalesDetail') }}",
+                data: function(d) {
+                    d.fromDate = $('#fromDate').val();
+                    d.toDate = $('#toDate').val();
+                }
+            },
+            columns: [
+                { data: 'tanggal', name: 'tanggal' },
+                { data: 'store_code', name: 'store_code' },
+                { data: 'StoreName', name: 'store.name' },
+                { data: 'SubCat', name: 'masterArticle.subcat' },
+                { data: 'sku', name: 'sku' },
+                { data: 'plu', name: 'plu' },
+                { data: 'sv', name: 'sv' },
+                { data: 'Type', name: 'masterArticle.art_type_system' },
+                { data: 'description', name: 'description' },
+                { 
+                    data: 'gross', 
+                    name: 'gross',
+                    render: function(data, type, row) {
+                        return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
+                    }
+                },
+                { data: 'disc', name: 'disc' },
+                { data: 'qty', name: 'qty' },
+                { 
+                    data: 'price', 
+                    name: 'price',
+                    render: function(data, type, row) {
+                        return data ? data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0';
+                    }
+                },
+                { data: 'pos', name: 'pos' },
+                { data: 'trans', name: 'trans' },
+                { data: 'Number', name: 'salesHeader.number' }
+            ],
+            dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-md-6"B><"col-md-6"f>>' + 
+                't' +
+                '<"row"<"col-md-6"i><"col-md-6"p>>',
+            lengthMenu: [
+                [10, 25, 50, 75, 100],
+                ['10', '25', '50', '75', '100']
+            ],
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: 'Copy',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'csv',
+                    text: 'CSV',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    className: 'btn btn-primary'
+                }
+            ],
+            language: {
+                paginate: {
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                },
+                info: "Showing _START_ to _END_ of _TOTAL_ entries"
+            },
+            scrollX: true
+        });
+        
+        $('#filter').on('click', function() {
+            table.ajax.reload();
+        });
+    });
 
     $.ajaxSetup({
         headers: {
