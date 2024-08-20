@@ -35,7 +35,6 @@ class RegistrasiController extends Controller
             ->groupBy('stores.store_code', 'stores.initial_store', 'stores.name')
             ->havingRaw('COUNT(members.store_code) > 0');
 
-        // Menambahkan filter tanggal jika ada
         if ($fromDate && $toDate) {
             $query->whereBetween('members.created_at', [$fromDate, $toDate]);
         }
