@@ -120,7 +120,7 @@ $user = Auth::user();
                 </a>
             </li>
             <li class="nav-item navMain mb-2 {{ \Request::segment(1) == 'transaction-store' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="">
+                <a class="d-flex align-items-center" href="{{ route('transaction.store') }}">
                     <i class="material-icons">business</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Transaction Store</span>
                 </a>
