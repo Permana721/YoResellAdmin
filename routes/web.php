@@ -15,6 +15,7 @@ use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RegionStoreController;
 use App\Http\Controllers\SalesDetailController;
 use App\Http\Controllers\SalesMonthlyController;
+use App\Http\Controllers\TransactionStoreController;
 use App\Http\Controllers\TransactionMemberController;
 
 
@@ -124,4 +125,7 @@ Route::middleware(['login'])->group(function () {
 
     Route::get('/sales-monthly', [SalesMonthlyController::class, 'salesMonthly'])->name('sales.monthly');
     Route::get('/sales-monthly/get-sales-monthly', [SalesMonthlyController::class, 'getSalesMonthly'])->name('sales.getSalesMonthly');
+
+    Route::get('/transaction-store', [TransactionStoreController::class, 'transactionStore'])->name('transaction.store');
+    Route::get('/transaction-store/get-transaction-store', [TransactionStoreController::class, 'getTransactionStore'])->name('store.getTransactionStore');
 });
