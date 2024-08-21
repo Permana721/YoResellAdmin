@@ -27,7 +27,7 @@ class StoreController extends Controller
             'title' => 'Store Catalog',
         ]);
     }
-
+// 
     public function getStore(Request $request)
     {
         if ($request->ajax()) {
