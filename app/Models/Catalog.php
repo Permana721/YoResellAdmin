@@ -21,3 +21,4 @@ class Catalog extends Model
         'store_code',
     ];
 }
+// 
