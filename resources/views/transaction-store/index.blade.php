@@ -49,66 +49,65 @@
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
-    var table = $('#detailedTable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "{{ route('store.getTransactionStore') }}",
-            data: function(d) {
-                d.fromDate = $('#fromDate').val();
-                d.toDate = $('#toDate').val();
-            }
-        },
-        columns: [
-            { data: 'store', name: 'store' },
-            { data: 'omset_qty', name: 'omset_qty' },
-            { data: 'omset_rupiah', name: 'omset_rupiah' },
-        ],
-        dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-md-6"B><"col-md-6"f>>' + 
-            't' +
-            '<"row"<"col-md-6"i><"col-md-6"p>>',
-        lengthMenu: [
-            [10, 25, 50, 75, 100],
-            ['10', '25', '50', '75', '100']
-        ],
-        buttons: [
-            {
-                extend: 'copy',
-                text: 'Copy',
-                className: 'btn btn-primary'
+        var table = $('#detailedTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('store.getTransactionStore') }}",
+                data: function(d) {
+                    d.fromDate = $('#fromDate').val();
+                    d.toDate = $('#toDate').val();
+                }
             },
-            {
-                extend: 'excel',
-                text: 'Excel',
-                className: 'btn btn-primary'
+            columns: [
+                { data: 'store', name: 'store' },
+                { data: 'omset_qty', name: 'omset_qty', searchable: true },
+                { data: 'omset_rupiah', name: 'omset_rupiah', searchable: true },
+            ],
+            searching: true,
+            dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-md-6"B><"col-md-6"f>>' + 
+                't' +
+                '<"row"<"col-md-6"i><"col-md-6"p>>',
+            lengthMenu: [
+                [10, 25, 50, 75, 100],
+                ['10', '25', '50', '75', '100']
+            ],
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: 'Copy',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'csv',
+                    text: 'CSV',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    className: 'btn btn-primary'
+                }
+            ],
+            language: {
+                paginate: {
+                    previous: '&nbsp;',
+                    next: '&nbsp;'
+                },
+                info: "Showing _START_ to _END_ of _TOTAL_ entries"
             },
-            {
-                extend: 'csv',
-                text: 'CSV',
-                className: 'btn btn-primary'
-            },
-            {
-                extend: 'pdf',
-                text: 'PDF',
-                className: 'btn btn-primary'
-            }
-        ],
-        language: {
-            paginate: {
-                previous: '&nbsp;',
-                next: '&nbsp;'
-            },
-            info: "Showing _START_ to _END_ of _TOTAL_ entries"
-        },
-        scrollX: true
+            scrollX: true,
+        });
+
+        $('#filter').on('click', function() {
+            table.ajax.reload();
+        });
     });
-
-    $('#filter').on('click', function() {
-        table.ajax.reload();  // Reload table with new data filtered by date
-    });
-});
-
-
 
     $.ajaxSetup({
         headers: {
