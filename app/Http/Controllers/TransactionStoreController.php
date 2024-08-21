@@ -32,23 +32,28 @@ class TransactionStoreController extends Controller
 
     public function getTransactionStore(Request $request)
     {
-        $query = SalesDetail::with('store')
-            ->selectRaw('
-                store_code,
-                SUM(qty) as omset_qty,
-                SUM(price * qty) as omset_rupiah
-            ')
-            ->groupBy('store_code');
+        $query = SalesDetail::selectRaw('
+            store_code,
+            SUM(qty) as omset_qty,
+            SUM(price) as omset_rupiah
+        ')
+        ->groupBy('store_code');
 
-        // Jika parameter tanggal disediakan, filter berdasarkan tanggal
         if ($request->has('fromDate') && $request->has('toDate') && $request->fromDate && $request->toDate) {
             $fromDate = $request->input('fromDate');
             $toDate = $request->input('toDate');
-            
             $query->whereBetween('tanggal', [$fromDate, $toDate]);
         }
 
-        // DataTables akan mengatur ulang omset_qty dan omset_rupiah jika filter diterapkan
+        if ($request->has('search') && $request->input('search.value')) {
+            $searchValue = strtolower($request->input('search.value'));
+            $query->where(function($query) use ($searchValue) {
+                $query->whereHas('store', function($q) use ($searchValue) {
+                    $q->whereRaw('LOWER(name) LIKE ?', ["%{$searchValue}%"]);
+                })->orWhereRaw('LOWER(store_code) LIKE ?', ["%{$searchValue}%"]);
+            });
+        }
+
         $data = DataTables::of($query)
             ->addColumn('store', function ($row) {
                 return $row->store ? $row->store->name : 'Unknown';
