@@ -8,3 +8,4 @@ class SalesMonthlyController extends Controller
 {
     //
 }
+// 
