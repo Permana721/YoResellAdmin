@@ -92,7 +92,7 @@ class RoleMenuController extends Controller
             'title' => 'Edit Role Menu',
         ]);
     }
-
+// 
     public function update(Request $request, $id)
     {
         $data = Member::findOrFail($id);
