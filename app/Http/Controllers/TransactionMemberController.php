@@ -46,5 +46,5 @@ class TransactionMemberController extends Controller
             })
             ->make(true);
     }
-// 
+
 }
