@@ -42,4 +42,13 @@ class SalesDetail extends Model
         return $this->belongsTo(SalesHeader::class, 'store_code', 'store_code');
     }
 
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
+    public function salesHeaders()
+    {
+        return $this->belongsTo(SalesHeader::class, 'sales_header_id', 'id');
+    }
 }

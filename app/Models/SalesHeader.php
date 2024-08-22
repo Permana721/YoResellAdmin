@@ -20,4 +20,15 @@ class SalesHeader extends Model
         'created_at',
         'file_name',
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
+    public function card()
+    {
+        return $this->belongsTo(Card::class, 'number', 'number');
+    }
+
 }

@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title', 'Report Sales Monthly')
+@section('title', 'Detail Transaksi')
 
 @section('content')
 
@@ -7,93 +7,144 @@
 
 <div class="card">
     <div class="card-body">
-        <section id="table-roles">
-        <div class="row">
-            <div class="col-12">
-            <div class="card-datatable table-responsive pt-0">
-                <table id="detailedTable" class="datatables-basic table">
-                <thead>
-                    <tr>
-                    <th>No</th>
-                    <th>Periode</th>
-                    <th>Cabang</th>
-                    <th>Type Customer</th>
-                    <th>Sales QTY</th>
-                    <th>Sales Rupiah</th>
-                    <th id="statusColumn">Status</th>
-                    </tr>
-                </thead>
-                </table>
+        <div class="row mb-2" style="position: relative; top: 5px;"> 
+            <div class="col-md-3">
+                <input type="month" id="fromDate" class="form-control" value="{{ date('Y-m', strtotime('first day of january this year')) }}">
             </div>
+            <div class="col-md-3">
+                <input type="month" id="toDate" class="form-control" value="{{ date('Y-m') }}">
+            </div>
+            <div class="col-md-3">
+                <select id="store" class="form-control">
+                    <option value="">Pilih Cabang</option>
+                    @foreach($stores as $store)
+                        <option value="{{ $store->store_code }}">{{ $store->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="typeCustomer" class="form-control">
+                    <option value="ALL">Semua Tipe Pelanggan</option>
+                    @foreach($typeCustomers as $type)
+                        <option value="{{ $type }}">{{ $type }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2 mt-2">
+                <button id="filter" class="btn btn-primary">Tampilkan</button>
             </div>
         </div>
+
+        <!-- Chart Section -->
+        <div>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <!-- Data Table Section -->
+        <section id="table-roles">
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table id="detailedTable" class="datatables-basic table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Periode</th>
+                                    <th>Cabang</th>
+                                    <th>Tipe Pelanggan</th>
+                                    <th>Jumlah Penjualan (Qty)</th>
+                                    <th>Total Penjualan (Rupiah)</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
-        let dtdom = '<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>';
-
-        $('#detailedTable').DataTable({
+        var table = $('#detailedTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('role.getRole') }}",
-            columns: [
-                { data: 'name', name: 'name' },
-                { 
-                    data: 'created_at', 
-                    name: 'created_at',
-                    render: function(data, type, row) {
-                        return moment(data).format('DD MMMM YYYY HH:mm');
-                    }
-                },
-                { 
-                    data: 'updated_at', 
-                    name: 'updated_at',
-                    render: function(data, type, row) {
-                        return moment(data).format('DD MMMM YYYY HH:mm');
-                    }
-                },
-                { data: 'action', name: 'action', orderable: false, searchable: false },
-            ],
-            dom: dtdom,
-            lengthMenu: [
-                [10, 25, 50, 75, 100],
-                ['10', '25', '50', '75', '100']
-            ],
-            buttons: [
-                {
-                    text: feather.icons['plus'].toSvg({ class: 'mr-50 font-small-4' }) + 'Add',
-                    className: 'create-new btn btn-primary',
-                    attr: {
-                        'data-toggle': 'modal',
-                        'data-target': '#modalAddrole'
-                    },
-                    action: function(e, dt, button, config) {
-                        window.location = "{{route('create.role')}}";
-                    }
+            ajax: {
+                url: "{{ route('sales.getSalesMonthly') }}",
+                data: function(d) {
+                    d.fromDate = $('#fromDate').val();
+                    d.toDate = $('#toDate').val();
+                    d.store = $('#store').val();
+                    d.type_customer = $('#typeCustomer').val(); // Ensure this matches controller parameter
                 }
-            ],
-            language: {
-                paginate: {
-                    previous: '&nbsp;',
-                    next: '&nbsp;'
-                },
-                info: "Showing _START_ to _END_ of _TOTAL_ entries"
             },
-            scrollX: true
+            columns: [
+                { data: 'no', name: 'no' },
+                { data: 'periode', name: 'periode' },
+                { data: 'cabang', name: 'cabang' },
+                { data: 'salesQTY', name: 'salesQTY' },
+                { data: 'salesRupiah', name: 'salesRupiah' }
+            ]
         });
 
-        $('div.head-label').html('<h6 class="mb-0">Role list</h6>');
+        $('#filter').on('click', function() {
+            table.ajax.reload();
+            updateChart();
+        });
+
+        function updateChart() {
+            let fromDate = $('#fromDate').val();
+            let toDate = $('#toDate').val();
+            let store = $('#store').val();
+            let typeCustomer = $('#typeCustomer').val();
+
+            $.ajax({
+                url: "{{ route('sales.getSalesMonthlyChart') }}",
+                method: 'GET',
+                data: { fromDate, toDate, store, type_customer: typeCustomer }, // Ensure this matches controller parameter
+                success: function(data) {
+                    myChart.data.labels = data.labels;
+                    myChart.data.datasets[0].data = data.qty;
+                    myChart.data.datasets[1].data = data.rupiah;
+                    myChart.update();
+                }
+            });
+        }
     });
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // Diisi dengan labels dari data
+            datasets: [
+                {
+                    label: 'Qty',
+                    data: [], // Diisi dengan data qty
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Rupiah',
+                    data: [], // Diisi dengan data rupiah
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { beginAtZero: true },
+                y: { beginAtZero: true }
+            }
         }
     });
 </script>
+
 @endsection

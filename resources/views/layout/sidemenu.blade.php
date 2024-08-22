@@ -108,7 +108,7 @@ $user = Auth::user();
                 </a>
             </li>
             <li class="nav-item navMain {{ \Request::segment(1) == 'sales-monthly' ? 'active':'' }}">
-                <a class="d-flex align-items-center" href="">
+                <a class="d-flex align-items-center" href="{{ route('sales.monthly') }}">
                     <i class="material-icons">assessment</i>
                     <span class="menu-title text-truncate" data-i18n="Home">Sales Monthly</span>
                 </a>

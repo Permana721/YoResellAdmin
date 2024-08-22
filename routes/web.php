@@ -125,6 +125,7 @@ Route::middleware(['login'])->group(function () {
 
     Route::get('/sales-monthly', [SalesMonthlyController::class, 'salesMonthly'])->name('sales.monthly');
     Route::get('/sales-monthly/get-sales-monthly', [SalesMonthlyController::class, 'getSalesMonthly'])->name('sales.getSalesMonthly');
+    Route::get('/sales-monthly/get-sales-monthly-chart', [SalesMonthlyController::class, 'getSalesMonthlyChart'])->name('sales.getSalesMonthlyChart');
 
     Route::get('/transaction-store', [TransactionStoreController::class, 'transactionStore'])->name('transaction.store');
     Route::get('/transaction-store/get-transaction-store', [TransactionStoreController::class, 'getTransactionStore'])->name('store.getTransactionStore');

@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link href="{{ asset('app-assets/select2/css/select2.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>.brand-text-head {font-size: 1em;color: #7367F0;white-space: normal;margin-left: 1.7mm}.home-font{font-size:5em}.home-title{ color: #636363; }.text-align-right{text-align: right;}.fontme{font-size:1.3em}.text-align-center{text-align: center}.uppercased {text-transform: uppercase; }</style>
     @yield('styles')
     @section('title', 'Home')
