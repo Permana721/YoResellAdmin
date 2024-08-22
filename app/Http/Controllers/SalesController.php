@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use RealRashid\SweetAlert\Facades\Alert;
-// 
+
 class SalesController extends Controller
 {
     public function detail(Request $request)
