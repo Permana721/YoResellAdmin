@@ -67,4 +67,9 @@ class Member extends Model
         return $this->belongsTo(Store::class, 'store_code', 'store_code');
     }
 
+    public function salesDetails()
+    {
+        return $this->hasMany(SalesDetail::class, 'member_id');
+    }
+
 }
