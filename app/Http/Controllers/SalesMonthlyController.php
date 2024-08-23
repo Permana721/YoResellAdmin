@@ -49,7 +49,6 @@ class SalesMonthlyController extends Controller
             });
         }
     
-        // Ambil data dan lakukan agregasi
         $data = $query->selectRaw('EXTRACT(MONTH FROM tanggal) as bulan, EXTRACT(YEAR FROM tanggal) as tahun, store_code, sum(qty) as totalQty, sum(price) as totalRupiah')
             ->groupBy('bulan', 'tahun', 'store_code')
             ->orderBy('tahun', 'ASC')
@@ -59,7 +58,7 @@ class SalesMonthlyController extends Controller
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('no', function($row) {
-                return $row->bulan; // Mengisi kolom 'no' dengan nomor bulan
+                return $row->bulan;
             })
             ->addColumn('periode', function($row) {
                 return date('F - Y', mktime(0, 0, 0, $row->bulan, 10)) . ' - ' . $row->tahun;

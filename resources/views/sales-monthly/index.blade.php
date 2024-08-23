@@ -35,12 +35,10 @@
             </div>
         </div>
 
-        <!-- Chart Section -->
         <div>
             <canvas id="salesChart"></canvas>
         </div>
 
-        <!-- Data Table Section -->
         <section id="table-roles">
             <div class="row mt-4">
                 <div class="col-12">
@@ -78,7 +76,7 @@
                     d.fromDate = $('#fromDate').val();
                     d.toDate = $('#toDate').val();
                     d.store = $('#store').val();
-                    d.type_customer = $('#typeCustomer').val(); // Ensure this matches controller parameter
+                    d.type_customer = $('#typeCustomer').val(); 
                 }
             },
             columns: [
@@ -104,7 +102,7 @@
             $.ajax({
                 url: "{{ route('sales.getSalesMonthlyChart') }}",
                 method: 'GET',
-                data: { fromDate, toDate, store, type_customer: typeCustomer }, // Ensure this matches controller parameter
+                data: { fromDate, toDate, store, type_customer: typeCustomer }, 
                 success: function(data) {
                     myChart.data.labels = data.labels;
                     myChart.data.datasets[0].data = data.qty;
@@ -119,18 +117,18 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [], // Diisi dengan labels dari data
+            labels: [],
             datasets: [
                 {
                     label: 'Qty',
-                    data: [], // Diisi dengan data qty
+                    data: [],
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 },
                 {
                     label: 'Rupiah',
-                    data: [], // Diisi dengan data rupiah
+                    data: [],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
