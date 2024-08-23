@@ -30,19 +30,16 @@ class SalesMonthlyController extends Controller
     {
         $query = SalesDetail::query();
     
-        // Filter berdasarkan tanggal
         if ($request->fromDate && $request->toDate) {
             $fromDate = $request->fromDate . '-01';
             $toDate = date('Y-m-t', strtotime($request->toDate . '-01'));
             $query->whereBetween('tanggal', [$fromDate, $toDate]);
         }
     
-        // Filter berdasarkan store
         if ($request->store) {
             $query->where('store_code', $request->store);
         }
     
-        // Filter berdasarkan tipe pelanggan
         if ($request->type_customer && $request->type_customer !== 'ALL') {
             $query->whereHas('salesHeader.card.member', function($q) use ($request) {
                 $q->where('type_customer', $request->type_customer);
@@ -97,7 +94,6 @@ public function getSalesMonthlyChart(Request $request)
         });
     }
 
-    // Group by bulan dan tahun
     $data = $query->selectRaw('
             EXTRACT(MONTH FROM tanggal) as bulan, 
             EXTRACT(YEAR FROM tanggal) as tahun, 
