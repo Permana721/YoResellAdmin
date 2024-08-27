@@ -38,12 +38,6 @@
     </div>
 </div>
 
-<style>
-    div.dataTables_wrapper div.dataTables_paginate {
-        margin-top: -35px;
-    }
-</style>
-
 @endsection
 
 @section('scripts')
