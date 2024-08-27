@@ -31,15 +31,22 @@ class CatalogController extends Controller
     public function getCatalog(Request $request)
     {
         if ($request->ajax()) {
+            $user = auth()->user();
+
+            if ($user->role_id == 3) {
+                // Jika role_id = 3, tidak mengembalikan data apapun
+                return DataTables::of(collect())->make(true);
+            }
+
             $data = Catalog::select(['id', 'name', 'created_by', 'updated_by', 'created_at', 'updated_at', 'whatsapp', 'url_catalog', 'store_code'])
-            ->get()
-            ->map(function($catalog) {
-                $catalog->hashed_id = base64_encode($catalog->id);
-                return $catalog;
-            });
+                ->get()
+                ->map(function($catalog) {
+                    $catalog->hashed_id = base64_encode($catalog->id);
+                    return $catalog;
+                });
 
             return DataTables::of($data)
-                ->addColumn('action', function($row){
+                ->addColumn('action', function($row) {
                     $deleteUrl = route('delete.catalog', $row->id);
                     $editUrl = route('edit.catalog', $row->hashed_id);
 
@@ -48,10 +55,10 @@ class CatalogController extends Controller
                                 <i class="material-icons">menu</i>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
-                                <form action="'.$deleteUrl.'" method="POST">
-                                    <input type="hidden" name="_token" value="'.csrf_token().'">
-                                    '.method_field('DELETE').'
+                                <a class="dropdown-item" href="' . $editUrl . '">Edit</a>
+                                <form action="' . $deleteUrl . '" method="POST">
+                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
+                                    ' . method_field('DELETE') . '
                                     <button type="submit" class="dropdown-item w-100" onclick="return confirm(\'Are you sure?\')">Delete</button>
                                 </form>
                             </div>
