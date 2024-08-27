@@ -42,7 +42,7 @@ class TransactionMemberController extends Controller
                 $totalRupiah = $member->store->salesDetail->sum(function ($detail) {
                     return $detail->qty * $detail->price;
                 });
-                return $totalRupiah ? number_format($totalRupiah, 2) : 0;
+                return $totalRupiah ? number_format($totalRupiah) : 0;
             })
             ->make(true);
     }
