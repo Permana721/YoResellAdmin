@@ -43,7 +43,7 @@
             columns: [
                 { data: 'username', name: 'username' },
                 { data: 'full_name', name: 'full_name' },
-                { data: 'phone_otp', name: 'phone_otp' }, // Menggunakan phone_otp sebagai data
+                { data: 'phone_otp', name: 'phone_otp' },
                 { data: 'ymc', name: 'ymc' },
                 { data: 'approve_cso', name: 'approve_cso' },
                 { data: 'approve_admin', name: 'approve_admin' },
@@ -89,7 +89,6 @@
                 info: "Showing _START_ to _END_ of _TOTAL_ entries"
             },
             scrollX: true,
-            // responsive: true, 
             createdRow: function(row, data) {
                 $('td:eq(4)', row).html(data.approve_cso == 1 ? '<span style="color: green;">Approve</span>' : '<span style="color: red;">Not Approve</span>');
             }
