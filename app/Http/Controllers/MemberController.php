@@ -41,20 +41,29 @@ class MemberController extends Controller
     public function getMember(Request $request)
     {
         if ($request->ajax()) {
-            $data = Member::with('card')
-                ->select(['id', 'username', 'full_name', 'phone_1', 'otp', 'approve_cso', 'approve_admin', 'created_at', 'updated_at'])
-                ->get()
-                ->map(function($member) {
+            $query = Member::with('card')
+                ->select(['id', 'username', 'full_name', 'phone_1', 'otp', 'approve_cso', 'approve_admin', 'created_at', 'updated_at']);
+
+            $user = auth()->user();
+            if ($user->role_id == 3) {
+                $query->where('store_code', $user->store_code);
+            }
+
+            $data = $query->get()->map(function ($member) use ($user) {
+                if ($user->role_id == 3) {
+                    $member->phone_otp = $member->phone_1;
+                } else {
                     $member->phone_otp = $member->phone_1 . ' (' . $member->otp . ')';
-                    $member->hashed_id = base64_encode($member->id);
-                    return $member;
-                });
+                }
+                $member->hashed_id = base64_encode($member->id);
+                return $member;
+            });
 
             return DataTables::of($data)
-                ->addColumn('ymc', function($row) {
+                ->addColumn('ymc', function ($row) {
                     return optional($row->card)->number ?: 'No Data';
                 })
-                ->addColumn('action', function($row){
+                ->addColumn('action', function ($row) {
                     $editUrl = route('edit.member', $row->hashed_id);
 
                     return '<div class="dropdown">
@@ -62,11 +71,11 @@ class MemberController extends Controller
                                     <i class="material-icons">menu</i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="'.$editUrl.'">Edit</a>
+                                    <a class="dropdown-item" href="' . $editUrl . '">Edit</a>
                                 </div>
                             </div>';
                 })
-                ->editColumn('approve_admin', function($row){
+                ->editColumn('approve_admin', function ($row) {
                     return $row->approve_admin == 1 ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Not Active</span>';
                 })
                 ->rawColumns(['action', 'approve_admin'])
