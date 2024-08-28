@@ -34,7 +34,6 @@ class CatalogController extends Controller
             $user = auth()->user();
 
             if ($user->role_id == 3) {
-                // Jika role_id = 3, tidak mengembalikan data apapun
                 return DataTables::of(collect())->make(true);
             }
 
