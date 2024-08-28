@@ -31,7 +31,11 @@ class SalesDetailController extends Controller
 
     public function getSalesDetail(Request $request)
     {
-        $query = SalesDetail::with(['store', 'masterArticle', 'salesHeader']);
+        $user = auth()->user();
+        $userStoreCode = $user->store_code; 
+
+        $query = SalesDetail::with(['store', 'masterArticle', 'salesHeader'])
+            ->where('store_code', $userStoreCode); 
 
         if (!empty($request->fromDate) && !empty($request->toDate)) {
             $query->whereBetween('tanggal', [$request->fromDate, $request->toDate]);
@@ -39,16 +43,16 @@ class SalesDetailController extends Controller
 
         return DataTables::of($query)
             ->editColumn('StoreName', function ($row) {
-                return $row->store->name;
+                return $row->store ? $row->store->name : 'Unknown';
             })
             ->editColumn('SubCat', function ($row) {
-                return $row->masterArticle->subcat;
+                return $row->masterArticle ? $row->masterArticle->subcat : 'Unknown';
             })
             ->editColumn('Type', function ($row) {
-                return $row->masterArticle->art_type_system;
+                return $row->masterArticle ? $row->masterArticle->art_type_system : 'Unknown';
             })
             ->editColumn('Number', function ($row) {
-                return $row->salesHeader->number;
+                return $row->salesHeader ? $row->salesHeader->number : 'Unknown';
             })
             ->make(true);
     }
