@@ -8,6 +8,7 @@ use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 
@@ -31,19 +32,32 @@ class TransactionStoreController extends Controller
 
     public function getTransactionStore(Request $request)
     {
+        // Ambil data user yang sedang login
+        $user = auth()->user();
+        $userStoreCode = $user->store_code;
+        $roleId = $user->role_id;
+
+        // Definisikan query dasar
         $query = SalesDetail::selectRaw('
             store_code,
             SUM(qty) as omset_qty,
-            SUM(price) as omset_rupiah
+            SUM(gross - disc) as omset_rupiah
         ')
         ->groupBy('store_code');
 
+        // Filter data berdasarkan role_id
+        if ($roleId == 3 && $userStoreCode) {
+            $query->where('store_code', $userStoreCode);
+        }
+
+        // Filter berdasarkan tanggal jika tersedia
         if ($request->has('fromDate') && $request->has('toDate') && $request->fromDate && $request->toDate) {
             $fromDate = $request->input('fromDate');
             $toDate = $request->input('toDate');
             $query->whereBetween('tanggal', [$fromDate, $toDate]);
         }
 
+        // Filter berdasarkan nilai pencarian
         if ($request->has('search') && $request->input('search.value')) {
             $searchValue = strtolower($request->input('search.value'));
             $query->where(function($query) use ($searchValue) {
@@ -53,6 +67,7 @@ class TransactionStoreController extends Controller
             });
         }
 
+        // Generate data untuk DataTables
         $data = DataTables::of($query)
             ->addColumn('store', function ($row) {
                 return $row->store ? $row->store->name : 'Unknown';
