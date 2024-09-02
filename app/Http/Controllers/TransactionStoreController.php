@@ -32,12 +32,10 @@ class TransactionStoreController extends Controller
 
     public function getTransactionStore(Request $request)
     {
-        // Ambil data user yang sedang login
         $user = auth()->user();
         $userStoreCode = $user->store_code;
         $roleId = $user->role_id;
 
-        // Definisikan query dasar
         $query = SalesDetail::selectRaw('
             store_code,
             SUM(qty) as omset_qty,
@@ -45,19 +43,16 @@ class TransactionStoreController extends Controller
         ')
         ->groupBy('store_code');
 
-        // Filter data berdasarkan role_id
         if ($roleId == 3 && $userStoreCode) {
             $query->where('store_code', $userStoreCode);
         }
 
-        // Filter berdasarkan tanggal jika tersedia
         if ($request->has('fromDate') && $request->has('toDate') && $request->fromDate && $request->toDate) {
             $fromDate = $request->input('fromDate');
             $toDate = $request->input('toDate');
             $query->whereBetween('tanggal', [$fromDate, $toDate]);
         }
 
-        // Filter berdasarkan nilai pencarian
         if ($request->has('search') && $request->input('search.value')) {
             $searchValue = strtolower($request->input('search.value'));
             $query->where(function($query) use ($searchValue) {
@@ -66,8 +61,7 @@ class TransactionStoreController extends Controller
                 })->orWhereRaw('LOWER(store_code) LIKE ?', ["%{$searchValue}%"]);
             });
         }
-
-        // Generate data untuk DataTables
+        
         $data = DataTables::of($query)
             ->addColumn('store', function ($row) {
                 return $row->store ? $row->store->name : 'Unknown';
