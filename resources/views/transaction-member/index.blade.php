@@ -43,10 +43,6 @@
 
 @section('scripts')
 <script type="text/javascript">
-    $('#filter').on('click', function() {
-        $('#detailedTable').DataTable().ajax.reload();
-    });
-
     $(document).ready(function() {
         var table = $('#detailedTable').DataTable({
             processing: true,
@@ -55,15 +51,15 @@
                 url: "{{ route('transaction.getTransactionMember') }}",
                 data: function(d) {
                     d.fromDate = $('#fromDate').val();
-                    d.toDate = $('#toDate').val();
+                    d.toDate = $('#toDate').val(); 
                 }
             },
             columns: [
                 { data: 'store', name: 'store.name' },
                 { data: 'name', name: 'full_name' },
                 { data: 'member', name: 'card.number' },
-                { data: 'omset_qty', name: 'omset_qty', searchable: false, orderable: false },
-                { data: 'omset_rupiah', name: 'omset_rupiah', searchable: false, orderable: false },
+                { data: 'omset_qty', name: 'omset_qty'},
+                { data: 'omset_rupiah', name: 'omset_rupiah'},
             ],
             dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-md-6"B><"col-md-6"f>>' + 
                 't' +
@@ -103,7 +99,7 @@
             },
             scrollX: true
         });
-        
+
         $('#filter').on('click', function() {
             table.ajax.reload();
         });
