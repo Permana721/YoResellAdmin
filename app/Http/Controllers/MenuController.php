@@ -127,8 +127,6 @@ class MenuController extends Controller
         return back();
     }
 
-
-
     public function roleMenu(Request $request)
     {
         if ($request->ajax()) {
