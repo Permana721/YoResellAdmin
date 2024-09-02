@@ -31,4 +31,9 @@ class SalesHeader extends Model
         return $this->belongsTo(Card::class, 'number', 'number');
     }
 
+    public function salesDetails()
+    {
+        return $this->hasMany(SalesDetail::class, 'trans', 'trans');
+    }
+
 }
