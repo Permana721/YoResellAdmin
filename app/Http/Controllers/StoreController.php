@@ -31,7 +31,7 @@ class StoreController extends Controller
     public function getStore(Request $request)
     {
         if ($request->ajax()) {
-            $data = Store::select(['id', 'name', 'store_code', 'initial_store', 'address', 'city', 'latitude', 'longitude', 'created_at', 'updated_at'])
+            $data = Store::select(['id', 'name', 'store_code', 'initial_store', 'name', 'city', 'latitude', 'longitude', 'created_at', 'updated_at'])
             ->get()
             ->map(function($store) {
                 $store->hashed_id = base64_encode($store->id);
