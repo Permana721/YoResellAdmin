@@ -21,4 +21,9 @@ class Card extends Model
     {
         return $this->belongsTo(Member::class, 'member_id', 'id');
     }
+
+    public function salesHeaders()
+{
+    return $this->hasMany(SalesHeader::class, 'number', 'number');
+}
 }
