@@ -73,51 +73,50 @@ class SalesMonthlyController extends Controller
     }
     
 
-public function getSalesMonthlyChart(Request $request)
-{
-    $query = SalesDetail::query();
+    public function getSalesMonthlyChart(Request $request)
+    {
+        $query = SalesDetail::query();
 
-    if ($request->fromDate && $request->toDate) {
-        $fromDate = $request->fromDate . '-01';
-        $toDate = date('Y-m-t', strtotime($request->toDate . '-01'));
+        if ($request->fromDate && $request->toDate) {
+            $fromDate = $request->fromDate . '-01';
+            $toDate = date('Y-m-t', strtotime($request->toDate . '-01'));
 
-        $query->whereBetween('tanggal', [$fromDate, $toDate]);
-    }
+            $query->whereBetween('tanggal', [$fromDate, $toDate]);
+        }
 
-    if ($request->store) {
-        $query->where('store_code', $request->store);
-    }
+        if ($request->store) {
+            $query->where('store_code', $request->store);
+        }
 
-    if ($request->type_customer && $request->type_customer !== 'ALL') {
-        $query->whereHas('salesHeader.card.member', function($q) use ($request) {
-            $q->where('type_customer', $request->type_customer);
+        if ($request->type_customer && $request->type_customer !== 'ALL') {
+            $query->whereHas('salesHeader.card.member', function($q) use ($request) {
+                $q->where('type_customer', $request->type_customer);
+            });
+        }
+
+        $data = $query->selectRaw('
+                EXTRACT(MONTH FROM tanggal) as bulan, 
+                EXTRACT(YEAR FROM tanggal) as tahun, 
+                sum(qty) as totalQty, 
+                sum(price * qty) as totalRupiah
+            ')
+            ->groupBy('bulan', 'tahun')
+            ->orderBy('tahun', 'ASC')
+            ->orderBy('bulan', 'ASC')
+            ->get();
+
+        $labels = $data->map(function($row) {
+            return date('F - Y', mktime(0, 0, 0, $row->bulan, 10)) . ' - ' . $row->tahun;
         });
+
+        $qty = $data->pluck('totalQty');
+        $rupiah = $data->pluck('totalRupiah');
+
+        return response()->json([
+            'labels' => $labels,
+            'qty' => $qty,
+            'rupiah' => $rupiah
+        ]);
     }
-
-    $data = $query->selectRaw('
-            EXTRACT(MONTH FROM tanggal) as bulan, 
-            EXTRACT(YEAR FROM tanggal) as tahun, 
-            sum(qty) as totalQty, 
-            sum(price * qty) as totalRupiah
-        ')
-        ->groupBy('bulan', 'tahun')
-        ->orderBy('tahun', 'ASC')
-        ->orderBy('bulan', 'ASC')
-        ->get();
-
-    $labels = $data->map(function($row) {
-        return date('F - Y', mktime(0, 0, 0, $row->bulan, 10)) . ' - ' . $row->tahun;
-    });
-
-    $qty = $data->pluck('totalQty');
-    $rupiah = $data->pluck('totalRupiah');
-
-    return response()->json([
-        'labels' => $labels,
-        'qty' => $qty,
-        'rupiah' => $rupiah
-    ]);
-}
-
 
 }
