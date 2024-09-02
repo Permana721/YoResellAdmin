@@ -33,9 +33,13 @@ class SalesDetailController extends Controller
     {
         $user = auth()->user();
         $userStoreCode = $user->store_code; 
+        $roleId = $user->role_id;
 
-        $query = SalesDetail::with(['store', 'masterArticle', 'salesHeader'])
-            ->where('store_code', $userStoreCode); 
+        $query = SalesDetail::with(['store', 'masterArticle', 'salesHeader']);
+
+        if ($roleId == 3) {
+            $query->where('store_code', $userStoreCode);
+        }
 
         if (!empty($request->fromDate) && !empty($request->toDate)) {
             $query->whereBetween('tanggal', [$request->fromDate, $request->toDate]);
@@ -56,5 +60,4 @@ class SalesDetailController extends Controller
             })
             ->make(true);
     }
-
 }
