@@ -73,76 +73,25 @@
             ajax: {
                 url: "{{ route('sales.getSalesMonthly') }}",
                 data: function(d) {
-                    d.fromDate = $('#fromDate').val();
-                    d.toDate = $('#toDate').val();
+                    d.start_date = $('#fromDate').val();
+                    d.end_date = $('#toDate').val();
                     d.store = $('#store').val();
                     d.type_customer = $('#typeCustomer').val(); 
                 }
             },
+            pageLength: 10,
             columns: [
                 { data: 'no', name: 'no' },
                 { data: 'periode', name: 'periode' },
                 { data: 'cabang', name: 'cabang' },
-                { data: 'salesQTY', name: 'salesQTY' },
-                { data: 'salesRupiah', name: 'salesRupiah' }
-            ]
+                { data: 'tipe_customer', name: 'tipe_customer' },
+                { data: 'sales_qty', name: 'sales_qty' },
+                { data: 'total_penjualan', name: 'total_penjualan' }
+            ],
+            paging: true,
         });
-
-        $('#filter').on('click', function() {
-            table.ajax.reload();
-            updateChart();
-        });
-
-        function updateChart() {
-            let fromDate = $('#fromDate').val();
-            let toDate = $('#toDate').val();
-            let store = $('#store').val();
-            let typeCustomer = $('#typeCustomer').val();
-
-            $.ajax({
-                url: "{{ route('sales.getSalesMonthlyChart') }}",
-                method: 'GET',
-                data: { fromDate, toDate, store, type_customer: typeCustomer }, 
-                success: function(data) {
-                    myChart.data.labels = data.labels;
-                    myChart.data.datasets[0].data = data.qty;
-                    myChart.data.datasets[1].data = data.rupiah;
-                    myChart.update();
-                }
-            });
-        }
     });
 
-    var ctx = document.getElementById('salesChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Qty',
-                    data: [],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Rupiah',
-                    data: [],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { beginAtZero: true },
-                y: { beginAtZero: true }
-            }
-        }
-    });
 </script>
 
 @endsection
