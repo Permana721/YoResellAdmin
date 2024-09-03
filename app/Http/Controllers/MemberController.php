@@ -124,6 +124,7 @@ class MemberController extends Controller
         $data->brand = $request->brand;
         $data->save();     
 
+        
         return redirect()->route('member');
     }
 
@@ -151,6 +152,7 @@ class MemberController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
 
         $data = Member::all();
         return view('member.transaction',[
