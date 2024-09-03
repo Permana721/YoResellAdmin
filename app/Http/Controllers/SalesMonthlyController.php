@@ -28,95 +28,53 @@ class SalesMonthlyController extends Controller
 
     public function getSalesMonthly(Request $request)
     {
-        $query = SalesDetail::query();
-    
-        if ($request->fromDate && $request->toDate) {
-            $fromDate = $request->fromDate . '-01';
-            $toDate = date('Y-m-t', strtotime($request->toDate . '-01'));
-            $query->whereBetween('tanggal', [$fromDate, $toDate]);
-        }
-    
-        if ($request->store) {
-            $query->where('store_code', $request->store);
-        }
-    
-        if ($request->type_customer && $request->type_customer !== 'ALL') {
-            $query->whereHas('salesHeader.card.member', function($q) use ($request) {
-                $q->where('type_customer', $request->type_customer);
-            });
-        }
-    
-        $data = $query->selectRaw('EXTRACT(MONTH FROM tanggal) as bulan, EXTRACT(YEAR FROM tanggal) as tahun, store_code, sum(qty) as totalQty, sum(price) as totalRupiah')
-            ->groupBy('bulan', 'tahun', 'store_code')
-            ->orderBy('tahun', 'ASC')
-            ->orderBy('bulan', 'ASC')
-            ->get();
-    
-        return datatables()->of($data)
-            ->addIndexColumn()
-            ->addColumn('no', function($row) {
-                return $row->bulan;
-            })
-            ->addColumn('periode', function($row) {
-                return date('F - Y', mktime(0, 0, 0, $row->bulan, 10)) . ' - ' . $row->tahun;
-            })
-            ->addColumn('cabang', function($row) {
-                return Store::where('store_code', $row->store_code)->value('name');
-            })
-            ->addColumn('salesQTY', function($row) {
-                return $row->totalQty;
-            })
-            ->addColumn('salesRupiah', function($row) {
-                return $row->totalRupiah;
-            })
-            ->make(true);
-    }
-    
+        $user = Auth::user();
+        $roleId = $user->role_id;
+        $storeCode = $user->store_code;
 
-    public function getSalesMonthlyChart(Request $request)
-    {
-        $query = SalesDetail::query();
-
-        if ($request->fromDate && $request->toDate) {
-            $fromDate = $request->fromDate . '-01';
-            $toDate = date('Y-m-t', strtotime($request->toDate . '-01'));
-
-            $query->whereBetween('tanggal', [$fromDate, $toDate]);
-        }
-
-        if ($request->store) {
-            $query->where('store_code', $request->store);
-        }
-
-        if ($request->type_customer && $request->type_customer !== 'ALL') {
-            $query->whereHas('salesHeader.card.member', function($q) use ($request) {
-                $q->where('type_customer', $request->type_customer);
-            });
-        }
-
-        $data = $query->selectRaw('
-                EXTRACT(MONTH FROM tanggal) as bulan, 
-                EXTRACT(YEAR FROM tanggal) as tahun, 
-                sum(qty) as totalQty, 
-                sum(price * qty) as totalRupiah
+        $query = SalesDetail::selectRaw('
+                EXTRACT(MONTH FROM tanggal) AS month,
+                EXTRACT(YEAR FROM tanggal) AS year,
+                stores.name AS store_name,
+                SUM(qty) AS total_qty,
+                SUM(price) AS total_price
             ')
-            ->groupBy('bulan', 'tahun')
-            ->orderBy('tahun', 'ASC')
-            ->orderBy('bulan', 'ASC')
-            ->get();
+            ->join('stores', 'sales_details.store_code', '=', 'stores.store_code')
+            ->groupBy('month', 'year', 'store_name')
+            ->orderBy('year')
+            ->orderBy('month');
 
-        $labels = $data->map(function($row) {
-            return date('F - Y', mktime(0, 0, 0, $row->bulan, 10)) . ' - ' . $row->tahun;
+        if ($roleId == 3) {
+            $query->where('sales_details.store_code', $storeCode);
+        }
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date);
+            $query->whereBetween('tanggal', [$startDate, $endDate]);
+        }
+
+        $data = $query->paginate($request->input('length'));
+
+        $results = $data->map(function ($item) {
+            $monthName = Carbon::createFromFormat('m', $item->month)->format('F');
+            $period = "{$monthName} - {$item->year}";
+
+            return [
+                'no' => $item->month,
+                'periode' => $period,
+                'cabang' => $item->store_name,
+                'tipe_customer' => 'ALL',
+                'sales_qty' => $item->total_qty,
+                'total_penjualan' => number_format($item->total_price, 0, ',', '.'),
+            ];
         });
 
-        $qty = $data->pluck('totalQty');
-        $rupiah = $data->pluck('totalRupiah');
-
         return response()->json([
-            'labels' => $labels,
-            'qty' => $qty,
-            'rupiah' => $rupiah
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $data->total(),
+            'recordsFiltered' => $data->total(),
+            'data' => $results,
         ]);
     }
-
 }
