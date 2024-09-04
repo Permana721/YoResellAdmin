@@ -12,7 +12,6 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 
-
 class TransactionStoreController extends Controller
 {
     public function transactionStore(Request $request)
