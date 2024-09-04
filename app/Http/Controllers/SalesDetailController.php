@@ -60,5 +60,4 @@ class SalesDetailController extends Controller
             })
             ->make(true);
     }
-    
 }
