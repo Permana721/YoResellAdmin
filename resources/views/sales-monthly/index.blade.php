@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row mb-2" style="position: relative; top: 5px;"> 
+        <div class="row mb-2" style="position: relative; top: 5px;">
             <div class="col-md-3">
                 <input type="month" id="fromDate" class="form-control" value="{{ date('Y-m', strtotime('first day of january this year')) }}">
             </div>
@@ -35,15 +35,18 @@
             </div>
         </div>
 
-        <div>
-            <canvas id="salesChart"></canvas>
-        </div>
+        <div class="row mb-5 ml-2" style="position: relative; justify-content: end; top: 40px;">
+            <div class="d-flex align-items-center">
+                <h6 class="mb-0 me-5 mr-1">Search :</h6> 
+                <input type="text" id="searchInput" class="form-control" style="width: auto;">
+            </div>
+        </div>        
 
         <section id="table-roles">
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card-datatable table-responsive pt-0">
-                        <table id="detailedTable" class="datatables-basic table">
+                        <table id="detailedTable" class="display table" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -54,6 +57,9 @@
                                     <th>Total Penjualan (Rupiah)</th>
                                 </tr>
                             </thead>
+                            <tbody id="tableBody">
+                                <!-- Data akan dimuat di sini -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -65,21 +71,23 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
+<script>
     $(document).ready(function() {
-        var table = $('#detailedTable').DataTable({
+        let table = $('#detailedTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('sales.getSalesMonthly') }}",
-                data: function(d) {
+                data: function (d) {
+                    d.page = Math.ceil(d.start / d.length) + 1; // Update page number
+                    d.per_page = d.length;
                     d.start_date = $('#fromDate').val();
                     d.end_date = $('#toDate').val();
                     d.store = $('#store').val();
-                    d.type_customer = $('#typeCustomer').val(); 
+                    d.type_customer = $('#typeCustomer').val();
+                    d.search = $('#searchInput').val();
                 }
             },
-            pageLength: 10,
             columns: [
                 { data: 'no', name: 'no' },
                 { data: 'periode', name: 'periode' },
@@ -88,10 +96,21 @@
                 { data: 'sales_qty', name: 'sales_qty' },
                 { data: 'total_penjualan', name: 'total_penjualan' }
             ],
-            paging: true,
+            dom: 'rtip', // Hide search box and entries
+            language: {
+                info: "Showing _START_ to _END_ of _TOTAL_ entries", // Customize the info text
+                infoFiltered: "", // Hide the "filtered from" text
+                infoEmpty: "Showing 0 to 0 of 0 entries"
+            }
+        });
+
+        $('#filter').on('click', function() {
+            table.draw(); // Reload data with selected filters
+        });
+
+        $('#searchInput').on('keyup', function() {
+            table.search($(this).val()).draw(); // Reload data with search term
         });
     });
-
 </script>
-
 @endsection
