@@ -23,7 +23,6 @@ class RoleMenuController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        
 
         $data = RoleMenu::all();
         return view('role-menu.index',[
