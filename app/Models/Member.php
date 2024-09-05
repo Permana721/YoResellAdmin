@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Member extends Model
 {
@@ -56,6 +57,14 @@ class Member extends Model
         'type_costumer',
         'brand',
     ];
+
+    public function index()
+    {
+        $stores = Store::all();
+        $typeCustomers = Member::distinct()->pluck('type_customer');
+
+        return view('index', compact('stores', 'typeCustomers'));
+    }
 
     public function card()
     {
