@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
