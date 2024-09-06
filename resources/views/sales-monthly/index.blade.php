@@ -103,7 +103,7 @@
                     type_customer: $('#typeCustomer').val()
                 },
                 success: function(data) {
-                    console.log('Chart data:', data); // Debugging line
+                    console.log('Chart data:', data); 
 
                     if (salesChart) {
                         salesChart.destroy();
