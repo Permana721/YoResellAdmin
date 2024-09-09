@@ -34,7 +34,7 @@ class RegionController extends Controller
             $data = Region::select(['id', 'name', 'created_at', 'updated_at'])
             ->get()
             ->map(function($region) {
-                $region->hashed_id = base64_encode($region->id);
+                $region->hashed_id = hash('sha256', $region->id);
                 return $region;
             });
 
@@ -86,10 +86,17 @@ class RegionController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Region::findOrFail($id);
+        $regionId = Region::all()->filter(function($region) use ($hashedId) {
+            return hash('sha256', $region->id) === $hashedId;
+        })->pluck('id')->first();
 
-        return view('region.edit',[
+        if (!$regionId) {
+            abort(404, 'Region not found');
+        }
+
+        $data = Region::findOrFail($regionId);
+
+        return view('region.edit', [
             'data'  => $data,
             'title' => 'Region Edit',
         ]);
