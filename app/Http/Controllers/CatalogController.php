@@ -32,23 +32,23 @@ class CatalogController extends Controller
     {
         if ($request->ajax()) {
             $user = auth()->user();
-
+    
             if ($user->role_id == 3) {
                 return DataTables::of(collect())->make(true);
             }
-
+    
             $data = Catalog::select(['id', 'name', 'created_by', 'updated_by', 'created_at', 'updated_at', 'whatsapp', 'url_catalog', 'store_code'])
                 ->get()
                 ->map(function($catalog) {
-                    $catalog->hashed_id = base64_encode($catalog->id);
+                    $catalog->hashed_id = hash('sha256', $catalog->id);
                     return $catalog;
                 });
-
+    
             return DataTables::of($data)
                 ->addColumn('action', function($row) {
                     $deleteUrl = route('delete.catalog', $row->id);
                     $editUrl = route('edit.catalog', $row->hashed_id);
-
+    
                     $btn = '<div class="dropdown">
                             <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">menu</i>
@@ -66,9 +66,9 @@ class CatalogController extends Controller
                 })
                 ->make(true);
         }
-
+    
         return view('catalog.index');
-    }
+    }    
 
     public function create()
     {
@@ -98,14 +98,21 @@ class CatalogController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Catalog::findOrFail($id);
-
-        return view('catalog.edit',[
+        $catalogId = Catalog::all()->filter(function ($catalog) use ($hashedId) {
+            return hash('sha256', $catalog->id) === $hashedId;
+        })->pluck('id')->first();
+    
+        if (!$catalogId) {
+            abort(404, 'Catalog not found');
+        }
+    
+        $data = Catalog::findOrFail($catalogId);
+    
+        return view('catalog.edit', [
             'data'  => $data,
             'title' => 'Catalog Edit',
         ]);
-    }
+    }    
 
     public function update(Request $request, $id)
     {
