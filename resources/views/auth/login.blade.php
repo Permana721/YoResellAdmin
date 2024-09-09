@@ -9,7 +9,6 @@
     <title>User Login | YoResellAdmin</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('content/uploads/favicon.png') }}">
     <link href="{{ asset('app-assets/css/google-font/google-fonts.css') }}" rel="stylesheet">
-    <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/bootstrap-extended.css') }}">
@@ -20,8 +19,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/forms/form-validation.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/page-auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     <!-- END: Page CSS-->
 </head>
+
 <!-- END: Head-->
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
     <!-- BEGIN: Content-->
@@ -66,6 +68,16 @@
                                 <br/>
                                 <center><p class="card-text mb-2">Yogya Group 2024</p></center>
                                 <center><p class="card-text mb-2">Version 1.0</p></center>
+                                @if(session('error'))
+                                    <script>
+                                        new Noty({
+                                        type: 'error',
+                                        text: '{{ session('error') }}',
+                                        layout: 'topRight',
+                                        timeout: 3000
+                                        }).show();
+                                    </script>
+                                @endif
                             </div>
                         </div>
                         <!-- /Login-->
@@ -76,6 +88,8 @@
     </div>
     <!-- END: Content-->
     <!-- BEGIN: Vendor JS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
     <script src="{{ asset('app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
     <!-- BEGIN: Theme JS-->

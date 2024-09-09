@@ -52,7 +52,7 @@ class RoleMenuController extends Controller
                         'menu' => $menus,
                         'created_at' => $createdAt,
                         'updated_at' => $updatedAt,
-                        'hashed_id' => base64_encode($roleId)
+                        'hashed_id' => hash('sha256', $roleId) // Use SHA-256 hash
                     ];
                 });
 
@@ -77,7 +77,13 @@ class RoleMenuController extends Controller
 
     public function edit($hashedId)
     {
-        $roleId = base64_decode($hashedId);
+        $roleId = Role::all()->filter(function($role) use ($hashedId) {
+            return hash('sha256', $role->id) === $hashedId;
+        })->pluck('id')->first();
+
+        if (!$roleId) {
+            abort(404, 'Role not found');
+        }
 
         $roleMenus = RoleMenu::with('menu')
             ->where('role_id', $roleId)

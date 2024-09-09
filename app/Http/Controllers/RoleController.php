@@ -32,7 +32,7 @@ class RoleController extends Controller
             $data = Role::select(['id', 'name', 'created_at', 'updated_at'])
                         ->get()
                         ->map(function($role) {
-                            $role->hashed_id = base64_encode($role->id);
+                            $role->hashed_id = hash('sha256', $role->id);
                             return $role;
                         });
 
@@ -40,7 +40,7 @@ class RoleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $deleteUrl = route('delete.role', $row->id);
-                    $editUrl = route('edit.role', $row->hashed_id); 
+                    $editUrl = route('edit.role', $row->hashed_id);
 
                     $btn = '<div class="dropdown">
                             <button class="btn transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,10 +84,15 @@ class RoleController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Role::findOrFail($id);
+        $data = Role::all()->filter(function($role) use ($hashedId) {
+            return hash('sha256', $role->id) === $hashedId;
+        })->first();
 
-        return view('roles.edit',[
+        if (!$data) {
+            abort(404, 'Role not found');
+        }
+
+        return view('roles.edit', [
             'data'  => $data,
             'title' => 'Edit Role',
         ]);

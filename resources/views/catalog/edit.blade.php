@@ -30,12 +30,6 @@
                         <input type="text" name="url_catalog" id="url_catalog" value="{{ $data->url_catalog }}" placeholder="Url Catalog" class="form-control" autocomplete="off" required />
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="store_code"><strong>Store:</strong></label>
-                        <input type="text" name="store_code" id="store_code" value="{{ $data->store_code }}" placeholder="Store" class="form-control" autocomplete="off" required />
-                    </div>
-                </div>
             </div>
             <div>
                 <a href="{{ route('catalog') }}" class="btn btn-info" id="backButton">Back</a>

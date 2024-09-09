@@ -40,7 +40,7 @@ class RegionStoreController extends Controller
                     'initial_stores' => $region->regionStores->pluck('store.initial_store')->filter()->unique()->implode(', '),
                     'created_at' => $region->created_at->toIso8601String(),
                     'updated_at' => $region->updated_at->toIso8601String(),
-                    'hashed_id' => base64_encode($region->id)
+                    'hashed_id' => hash('sha256', $region->id)
                 ];
             });
 
@@ -65,7 +65,14 @@ class RegionStoreController extends Controller
 
     public function edit($hashedId)
     {
-        $regionId = base64_decode($hashedId);
+        $regionId = Region::all()->filter(function($region) use ($hashedId) {
+            return hash('sha256', $region->id) === $hashedId;
+        })->pluck('id')->first();
+
+        if (!$regionId) {
+            abort(404, 'Region not found');
+        }
+
         $region = Region::findOrFail($regionId);
         $stores = Store::all();
         $selectedStores = RegionStore::where('region_id', $regionId)->pluck('store_code')->toArray();
@@ -77,5 +84,4 @@ class RegionStoreController extends Controller
             'selectedStores' => $selectedStores
         ]);
     }
-
 }

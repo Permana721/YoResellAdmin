@@ -57,7 +57,8 @@ class UserController extends Controller
             return redirect()->intended('home');
         }
 
-        return back();
+        // Flash an error message to the session
+        return back()->with('error', 'Username atau Password salah');
     }
 
     public function index(Request $request)
@@ -83,13 +84,13 @@ class UserController extends Controller
                         ->get()
                         ->map(function($user) {
                             $user->status = 'Active';
-                            $user->hashed_id = base64_encode($user->id);
+                            $user->hashed_id = hash('sha256', $user->id);
                             return $user;
                         });
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function($row) {
                     $deleteUrl = route('deleteUser', $row->id);
                     $editUrl = route('editUser', $row->hashed_id); 
 
@@ -110,15 +111,21 @@ class UserController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = User::findOrFail($id);
+        $userId = User::all()->filter(function($user) use ($hashedId) {
+            return hash('sha256', $user->id) === $hashedId;
+        })->pluck('id')->first();
 
-        return view('user.edit',[
+        if (!$userId) {
+            abort(404, 'User not found');
+        }
+
+        $data = User::findOrFail($userId);
+
+        return view('user.edit', [
             'data'  => $data,
             'title' => 'Edit User',
         ]);
     }
-
 
     public function create()
     {
@@ -175,7 +182,6 @@ class UserController extends Controller
     {
         Auth::logout();
         request()->session()->invalidate();
-        request()->session()->regenerateToken();
         return redirect('/login');                       
     }
 }

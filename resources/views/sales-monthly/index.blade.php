@@ -19,12 +19,20 @@
             <div class="col-md-3">
                 <p>Stores</p>
                 <select id="store" class="form-control">
-                    <option value="ALL">ALL</option>
-                    @foreach($stores as $store)
-                        <option value="{{ $store->store_code }}">{{ $store->name }}</option>
-                    @endforeach
+                    @if(Auth::user()->role_id == 3)
+                        <!-- Display only the user's store -->
+                        <option value="{{ Auth::user()->store_code }}">
+                            {{ $stores->where('store_code', Auth::user()->store_code)->first()->name }}
+                        </option>
+                    @else
+                        <!-- Display all stores for role_id 1 and 2 -->
+                        <option value="ALL">ALL</option>
+                        @foreach($stores as $store)
+                            <option value="{{ $store->store_code }}">{{ $store->name }}</option>
+                        @endforeach
+                    @endif
                 </select>
-            </div>
+            </div>            
             <div class="col-md-3">
                 <p>Type</p>
                 <select id="typeCustomer" class="form-control">
@@ -91,6 +99,8 @@
 
 <script>
     $(document).ready(function() {
+        let roleId = {{ Auth::user()->role_id }};
+        let userStoreCode = "{{ Auth::user()->store_code }}";
         let salesChart;
 
         function updateChart() {
@@ -184,6 +194,11 @@
                     d.store = $('#store').val();
                     d.type_customer = $('#typeCustomer').val();
                     d.search = $('#searchInput').val();
+                    if (roleId === 3) {
+                        d.store = userStoreCode;
+                    } else {
+                        d.store = $('#store').val();
+                    }
                 }
             },
             columns: [

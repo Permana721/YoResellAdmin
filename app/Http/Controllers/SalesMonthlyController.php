@@ -18,13 +18,22 @@ use RealRashid\SweetAlert\Facades\Alert;
 class SalesMonthlyController extends Controller
 {
     public function salesMonthly() {
-        $stores = Store::all();
+        $user = Auth::user();
+    
+        if ($user->role_id == 3) {
+            // If role_id is 3, show only the store that the user belongs to
+            $stores = Store::where('store_code', $user->store_code)->get();
+        } else {
+            // If role_id is 1 or 2, show all stores
+            $stores = Store::all();
+        }
+    
         $typeCustomers = Member::select('type_customer')->distinct()->pluck('type_customer');
-        
+    
         return view('sales-monthly.index',[
             'title' => 'Report Sales Monthly',
         ], compact('stores', 'typeCustomers'));
-    }
+    }    
 
     public function getSalesMonthly(Request $request)
     {
@@ -35,8 +44,8 @@ class SalesMonthlyController extends Controller
                 EXTRACT(MONTH FROM sales_details.tanggal) AS month,
                 EXTRACT(YEAR FROM sales_details.tanggal) AS year,
                 stores.name AS store_name,
-                SUM(sales_details.qty) AS total_qty,
-                SUM(sales_details.gross - sales_details.disc) AS total_price
+                SUM(qty) AS total_qty,
+                SUM(gross - disc) AS total_price
             ')
             ->join('stores', 'sales_details.store_code', '=', 'stores.store_code')
             ->join('sales_headers', 'sales_details.trans', '=', 'sales_headers.trans')
@@ -45,20 +54,21 @@ class SalesMonthlyController extends Controller
             ->groupByRaw('EXTRACT(MONTH FROM sales_details.tanggal), EXTRACT(YEAR FROM sales_details.tanggal), stores.name')
             ->orderByRaw('EXTRACT(YEAR FROM sales_details.tanggal) ASC, EXTRACT(MONTH FROM sales_details.tanggal) ASC');
 
-        if ($request->has('store') && $request->store != 'ALL') {
+        if ($user->role_id == 3) {
+            $query->where('sales_details.store_code', $storeCode);
+        } elseif ($request->has('store') && $request->store != 'ALL') {
             $query->where('sales_details.store_code', $request->store);
         }
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $startDate = Carbon::parse($request->start_date)->startOfDay();
             $endDate = Carbon::parse($request->end_date)->endOfDay();
-
             $query->whereBetween('sales_details.tanggal', [$startDate, $endDate]);
         }
 
         if ($request->has('type_customer') && $request->type_customer != 'ALL') {
             $query->where('members.type_customer', $request->type_customer);
-        }    
+        }
 
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;

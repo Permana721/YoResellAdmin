@@ -22,19 +22,19 @@ class StoreController extends Controller
         $data = Store::all();
         return view('store.index',[
             'data'  => $data,
-            'title' => 'Store Catalog',
+            'title' => 'Store List',
         ]);
     }
 
     public function getStore(Request $request)
     {
         if ($request->ajax()) {
-            $data = Store::select(['id', 'name', 'store_code', 'initial_store', 'name', 'city', 'latitude', 'longitude', 'created_at', 'updated_at'])
-            ->get()
-            ->map(function($store) {
-                $store->hashed_id = base64_encode($store->id);
-                return $store;
-            });
+            $data = Store::select(['id', 'name', 'store_code', 'initial_store', 'city', 'latitude', 'longitude', 'created_at', 'updated_at'])
+                ->get()
+                ->map(function($store) {
+                    $store->hashed_id = hash('sha256', $store->id);
+                    return $store;
+                });
 
             return DataTables::of($data)
                 ->addColumn('action', function($row){
@@ -96,10 +96,17 @@ class StoreController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);                  
-        $data = Store::findOrFail($id);
+        $storeId = Store::all()->filter(function($store) use ($hashedId) {
+            return hash('sha256', $store->id) === $hashedId;
+        })->pluck('id')->first();
 
-        return view('store.edit',[
+        if (!$storeId) {
+            abort(404, 'Store not found');
+        }
+
+        $data = Store::findOrFail($storeId);
+
+        return view('store.edit', [
             'data'  => $data,
             'title' => 'Edit Store',
         ]);
