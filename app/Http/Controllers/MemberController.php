@@ -55,7 +55,8 @@ class MemberController extends Controller
                 } else {
                     $member->phone_otp = $member->phone_1 . ' (' . $member->otp . ')';
                 }
-                $member->hashed_id = base64_encode($member->id);
+                
+                $member->hashed_id = hash('sha256', $member->id);
                 return $member;
             });
 
@@ -87,8 +88,15 @@ class MemberController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Member::with('card')->findOrFail($id);
+        $memberId = Member::all()->filter(function ($member) use ($hashedId) {
+            return hash('sha256', $member->id) === $hashedId;
+        })->pluck('id')->first();
+
+        if (!$memberId) {
+            abort(404, 'Member not found');
+        }
+
+        $data = Member::with('card')->findOrFail($memberId);
 
         return view('member.edit', [
             'data'  => $data,
@@ -126,38 +134,5 @@ class MemberController extends Controller
 
         
         return redirect()->route('member');
-    }
-
-    public function detail(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Member::latest()->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-        $data = Member::all();
-        return view('member.detail',[
-            'data'  => $data,
-            'title' => 'Transaction Member Detail',
-        ]);
-    }
-
-    public function summary(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Member::latest()->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-
-        $data = Member::all();
-        return view('member.transaction',[
-            'data'  => $data,
-            'title' => 'Transaction Member Summary',
-        ]);
     }
 }
