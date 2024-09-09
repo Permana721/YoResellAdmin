@@ -33,7 +33,7 @@ class MenuController extends Controller
             $data = Menu::select(['id', 'name', 'group_name', 'url', 'icon', 'created_at', 'updated_at'])
             ->get()
             ->map(function($menu) {
-                $menu->hashed_id = base64_encode($menu->id);
+                $menu->hashed_id = hash('sha256', $menu->id);
                 return $menu;
             });
 
@@ -91,8 +91,13 @@ class MenuController extends Controller
 
     public function edit($hashedId)
     {
-        $id = base64_decode($hashedId);
-        $data = Menu::findOrFail($id);
+        $data = Menu::all()->filter(function($menu) use ($hashedId) {
+            return hash('sha256', $menu->id) === $hashedId;
+        })->first();
+
+        if (!$data) {
+            abort(404, 'Menu not found');
+        }
 
         return view('menu.edit',[
             'data'  => $data,
