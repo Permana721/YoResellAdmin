@@ -33,8 +33,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/themes/bordered-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link href="{{ asset('app-assets/select2/css/select2.min.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="{{ asset('app-assets/vendors/css/icon/material-icon.css') }}" rel="stylesheet">
     <style>.brand-text-head {font-size: 1em;color: #7367F0;white-space: normal;margin-left: 1.7mm}.home-font{font-size:5em}.home-title{ color: #636363; }.text-align-right{text-align: right;}.fontme{font-size:1.3em}.text-align-center{text-align: center}.uppercased {text-transform: uppercase; }</style>
     @yield('styles')
     @section('title', 'Home')
@@ -101,16 +100,17 @@
         @csrf
     </form>
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="{{ asset('app-assets/vendors/js/moment/moment.min.js')}}"></script>
     <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="{{ asset('app-assets/vendors/js/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.buttons.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/jzip/jzip.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/pdfmake/pdfmake.min.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/pdfmake/vsf_fonts.js')}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/charts/chart.min.js')}}"></script>
 
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')}}"></script>

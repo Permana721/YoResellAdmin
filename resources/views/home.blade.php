@@ -8,7 +8,7 @@
         Selamat datang, <b>{{ Auth::user()->full_name }}</b>.
     </div>
 </div>
-  <section>
+  {{-- <section>
     <div class="row kb-search-content-info match-height">
       <div class="col-md-3 col-sm-6 col-12 kb-search-content">
         <div class="card">
@@ -46,5 +46,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> --}}
 @endsection

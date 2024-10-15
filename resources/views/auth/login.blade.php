@@ -19,8 +19,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/forms/form-validation.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/page-auth.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/noty.min.css') }}">
+    <script src="{{ asset('app-assets/vendors/js/noty.min.js') }}"></script>
     <!-- END: Page CSS-->
 </head>
 
@@ -47,11 +47,11 @@
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 <center><img width="170" src="/content/uploads/logo.png"></center>
                                 <center><h2 class="card-title font-weight-bold mb-1">YoResellAdmin</h2></center>
-                                <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+                                {{-- <p class="card-text mb-2">Please sign-in to your account and start the adventure</p> --}}
                                 <form class="auth-login-form mt-2" action="{{ route('logpros') }}" method="POST">
                                 @csrf
                                     <div class="form-group">
-                                        <label class="form-label" for="username">User Name</label>
+                                        <label class="form-label" for="username">Username</label>
                                         <input required class="form-control" id="username" type="text" name="username" placeholder="username" aria-describedby="username" autofocus="" tabindex="1" />
                                     </div>
                                     <div class="form-group">
@@ -88,8 +88,8 @@
     </div>
     <!-- END: Content-->
     <!-- BEGIN: Vendor JS-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/noty.min.css') }}">
+    <script src="{{ asset('app-assets/vendors/js/noty.min.js') }}"></script>
     <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
     <script src="{{ asset('app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
     <!-- BEGIN: Theme JS-->

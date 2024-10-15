@@ -21,10 +21,8 @@ class SalesMonthlyController extends Controller
         $user = Auth::user();
     
         if ($user->role_id == 3) {
-            // If role_id is 3, show only the store that the user belongs to
             $stores = Store::where('store_code', $user->store_code)->get();
         } else {
-            // If role_id is 1 or 2, show all stores
             $stores = Store::all();
         }
     

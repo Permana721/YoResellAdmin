@@ -180,9 +180,12 @@ class UserController extends Controller
 
     public function logout()
     {
-        Auth::logout();
         request()->session()->invalidate();
-        return redirect('/login');                       
+        request()->session()->regenerateToken();
+
+        Auth::guard('web')->logout(); 
+
+        return redirect('/login');
     }
 }
 

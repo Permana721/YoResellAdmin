@@ -52,7 +52,7 @@ class RoleMenuController extends Controller
                         'menu' => $menus,
                         'created_at' => $createdAt,
                         'updated_at' => $updatedAt,
-                        'hashed_id' => hash('sha256', $roleId) // Use SHA-256 hash
+                        'hashed_id' => hash('sha256', $roleId) 
                     ];
                 });
 

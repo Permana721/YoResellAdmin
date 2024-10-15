@@ -20,12 +20,10 @@
                 <p>Stores</p>
                 <select id="store" class="form-control">
                     @if(Auth::user()->role_id == 3)
-                        <!-- Display only the user's store -->
                         <option value="{{ Auth::user()->store_code }}">
                             {{ $stores->where('store_code', Auth::user()->store_code)->first()->name }}
                         </option>
                     @else
-                        <!-- Display all stores for role_id 1 and 2 -->
                         <option value="ALL">ALL</option>
                         @foreach($stores as $store)
                             <option value="{{ $store->store_code }}">{{ $store->name }}</option>
